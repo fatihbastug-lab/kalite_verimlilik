@@ -3,694 +3,772 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verimlilik Takip Programı</title>
+<title>Performans Takip</title>
 
 <style>
-:root {
-    --primary: #c0392b;
-    --secondary: #2c3e50;
-    --success: #27ae60;
-    --warning: #f39c12;
-    --danger: #c0392b;
-    --blue: #2980b9;
-    --bg: #f4f7f6;
-    --card: #ffffff;
+:root{
+    --bg:#f4f7f6;
+    --card:#fff;
+    --dark:#2c3e50;
+    --red:#c0392b;
+    --green:#27ae60;
+    --orange:#f39c12;
+    --blue:#2980b9;
+    --purple:#8e44ad;
 }
-
-* {
-    box-sizing: border-box;
+*{box-sizing:border-box}
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:#222;
+    padding:14px;
 }
-
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: var(--bg);
-    padding: 15px;
-    color: #222;
+.container{
+    max-width:620px;
+    margin:auto;
 }
-
-.container {
-    width: 100%;
-    max-width: 520px;
-    margin: auto;
+.card{
+    background:var(--card);
+    border-radius:18px;
+    padding:18px;
+    box-shadow:0 6px 24px rgba(0,0,0,.1);
+    margin-bottom:14px;
 }
-
-.card {
-    background: var(--card);
-    padding: 20px;
-    border-radius: 16px;
-    box-shadow: 0 6px 25px rgba(0,0,0,0.10);
+h1,h2{
+    margin-top:0;
+    text-align:center;
+    color:var(--dark);
 }
-
-h1 {
-    margin-top: 0;
-    text-align: center;
-    color: var(--secondary);
-    font-size: 22px;
+h1{font-size:24px}
+h2{font-size:17px}
+label{
+    display:block;
+    margin-top:11px;
+    margin-bottom:5px;
+    font-size:12px;
+    font-weight:bold;
+    color:var(--red);
+    text-transform:uppercase;
 }
-
-h2 {
-    font-size: 16px;
-    margin-top: 0;
-    color: var(--secondary);
+input,select,textarea{
+    width:100%;
+    padding:11px;
+    border:1px solid #ddd;
+    border-radius:10px;
+    font-size:14px;
+    background:#fafafa;
 }
-
-label {
-    display: block;
-    margin-top: 12px;
-    margin-bottom: 5px;
-    font-size: 12px;
-    font-weight: bold;
-    color: var(--primary);
-    text-transform: uppercase;
+textarea{
+    min-height:65px;
+    resize:vertical;
 }
-
-input, select, textarea {
-    width: 100%;
-    padding: 11px;
-    border: 1px solid #ddd;
-    border-radius: 9px;
-    font-size: 14px;
-    background: #fafafa;
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
 }
-
-textarea {
-    min-height: 70px;
-    resize: vertical;
+button{
+    width:100%;
+    padding:13px;
+    border:0;
+    border-radius:11px;
+    font-weight:bold;
+    font-size:14px;
+    cursor:pointer;
+    margin-top:10px;
 }
-
-.row {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+.btn-dark{background:var(--dark);color:white}
+.btn-green{background:var(--green);color:white}
+.btn-blue{background:var(--blue);color:white}
+.btn-red{background:var(--red);color:white}
+.btn-light{background:#ecf0f1;color:#222}
+.hidden{display:none}
+.tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr;
+    gap:8px;
+    margin-bottom:12px;
 }
-
-button {
-    width: 100%;
-    padding: 13px;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 12px;
-    font-size: 14px;
+.tabs button{
+    margin-top:0;
+    padding:11px;
 }
-
-.btn-main {
-    background: var(--secondary);
-    color: white;
+.active{
+    background:var(--dark)!important;
+    color:white!important;
 }
-
-.btn-green {
-    background: var(--success);
-    color: white;
+.info{
+    background:#eef2f3;
+    padding:12px;
+    border-radius:12px;
+    text-align:center;
+    line-height:1.6;
+    font-size:13px;
+    margin-bottom:12px;
 }
-
-.btn-blue {
-    background: var(--blue);
-    color: white;
+.result{
+    margin-top:14px;
+    padding:17px;
+    border-radius:14px;
+    color:white;
+    text-align:center;
+    font-size:23px;
+    font-weight:bold;
 }
-
-.btn-red {
-    background: var(--danger);
-    color: white;
+.success{background:var(--green)}
+.warning{background:var(--orange)}
+.danger{background:var(--red)}
+.grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:12px;
 }
-
-.btn-light {
-    background: #ecf0f1;
-    color: #222;
+.stat{
+    color:white;
+    border-radius:12px;
+    padding:13px;
+    text-align:center;
+    font-weight:bold;
+    font-size:13px;
 }
-
-.hidden {
-    display: none;
+.analysis{
+    background:#fffde7;
+    border-left:5px solid #f1c40f;
+    padding:13px;
+    border-radius:10px;
+    margin-top:12px;
+    line-height:1.6;
+    font-size:14px;
 }
-
-.info-box {
-    background: #eef2f3;
-    padding: 12px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 13px;
-    margin-bottom: 12px;
-    line-height: 1.5;
+.history-item{
+    background:#f8f8f8;
+    border:1px solid #ddd;
+    border-radius:10px;
+    padding:10px;
+    margin-top:8px;
+    font-size:13px;
+    line-height:1.5;
 }
-
-.result {
-    margin-top: 15px;
-    padding: 16px;
-    border-radius: 12px;
-    color: white;
-    text-align: center;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-.success {
-    background: var(--success);
-}
-
-.warning {
-    background: var(--warning);
-}
-
-.danger {
-    background: var(--danger);
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    margin-top: 12px;
-}
-
-.stat {
-    color: white;
-    padding: 13px;
-    border-radius: 10px;
-    text-align: center;
-    font-size: 13px;
-    font-weight: bold;
-}
-
-.analysis {
-    margin-top: 12px;
-    padding: 13px;
-    border-left: 5px solid #f1c40f;
-    background: #fffde7;
-    border-radius: 8px;
-    font-size: 14px;
-    line-height: 1.6;
-}
-
-.history-item {
-    background: #f8f8f8;
-    border: 1px solid #ddd;
-    padding: 10px;
-    border-radius: 9px;
-    margin-top: 8px;
-    font-size: 13px;
-}
-
-.small {
-    font-size: 12px;
-    color: #666;
-    text-align: center;
-    margin-top: 10px;
+.small{
+    font-size:12px;
+    color:#666;
+    text-align:center;
 }
 </style>
 </head>
 
 <body>
-
 <div class="container">
 
-    <div id="setupPage" class="card hidden">
-        <h1>İlk Kurulum</h1>
+<div id="setupPage" class="card hidden">
+    <h1>Performans Takip</h1>
+    <h2>İlk Kurulum</h2>
 
-        <label>Personel Adı</label>
-        <input type="text" id="setupName" placeholder="Örn: Ahmet Yılmaz">
+    <label>Personel Adı</label>
+    <input id="setName" placeholder="Ad Soyad">
 
-        <label>Hedef Verimlilik (%)</label>
-        <input type="number" id="setupTargetPercent" placeholder="Örn: 65">
+    <label>Hedef Verimlilik (%)</label>
+    <input id="setTarget" type="number" value="65">
 
-        <div class="row">
-            <div>
-                <label>Mesai Başlangıç</label>
-                <input type="time" id="setupStartTime" value="08:30">
-            </div>
-            <div>
-                <label>Mesai Bitiş</label>
-                <input type="time" id="setupEndTime" value="18:45">
-            </div>
+    <div class="row">
+        <div>
+            <label>Mesai Başlangıç</label>
+            <input id="setStart" type="time" value="08:30">
         </div>
-
-        <label>Varsayılan İşlem Süresi (dk)</label>
-        <input type="number" id="setupDefaultProcessTime" placeholder="Örn: 10">
-
-        <label>İşlem Başı Ek Süre (dk)</label>
-        <input type="number" id="setupExtraPerProcess" value="2">
-
-        <label>Ek İşlem Katsayısı</label>
-        <input type="number" step="0.01" id="setupExtraCoefficient" value="0.5">
-
-        <label>Toplantı / Eğitim Katsayısı</label>
-        <input type="number" step="0.01" id="setupMeetingCoefficient" value="0.7">
-
-        <button class="btn-main" onclick="saveSettings()">Ayarları Kaydet</button>
-
-        <p class="small">Bu bilgiler tarayıcıda kayıtlı kalır.</p>
+        <div>
+            <label>Mesai Bitiş</label>
+            <input id="setEnd" type="time" value="18:45">
+        </div>
     </div>
 
-    <div id="appPage" class="card hidden">
-        <h1>Verimlilik Takibi</h1>
+    <label>Varsayılan İşlem Süresi (dk)</label>
+    <input id="setDefaultTime" type="number" value="10">
 
-        <div class="info-box" id="userInfo"></div>
+    <label>İşlem Başı Ek Süre (dk)</label>
+    <input id="setExtraPerItem" type="number" value="2">
 
-        <h2>Günlük Bilgiler</h2>
+    <label>Ek İşlem Katsayısı</label>
+    <input id="setExtraCoef" type="number" step="0.01" value="0.5">
+
+    <label>Toplantı / Eğitim Katsayısı</label>
+    <input id="setMeetingCoef" type="number" step="0.01" value="0.7">
+
+    <button class="btn-dark" onclick="saveSettings()">Ayarları Kaydet</button>
+    <p class="small">Ayarlar bu cihazda kayıtlı kalır.</p>
+</div>
+
+<div id="appPage" class="hidden">
+    <div class="card">
+        <h1>Performans Takip</h1>
+        <div id="infoBox" class="info"></div>
+
+        <div class="tabs">
+            <button id="tabDaily" class="active" onclick="showTab('daily')">Günlük</button>
+            <button id="tabMonthly" class="btn-light" onclick="showTab('monthly')">Aylık</button>
+            <button id="tabRecords" class="btn-light" onclick="showTab('records')">Kayıtlar</button>
+        </div>
+    </div>
+
+    <div id="dailyPage" class="card">
+        <h2>Günlük Hesaplama</h2>
 
         <div class="row">
             <div>
                 <label>Dinleme Adedi</label>
-                <input type="number" id="dailyCount" placeholder="Adet">
+                <input id="dCount" type="number" placeholder="Adet">
             </div>
             <div>
                 <label>Ortalama Süre</label>
-                <input type="number" id="dailyAvgTime" placeholder="dk">
+                <input id="dAvg" type="number" placeholder="dk">
             </div>
         </div>
 
         <label>Ek İşlem Var mı?</label>
-        <select id="extraEnabled" onchange="toggleExtraFields()">
+        <select id="dExtraStatus" onchange="toggleDailyExtra()">
             <option value="no">Hayır</option>
             <option value="yes">Evet</option>
         </select>
 
-        <div id="extraFields" class="hidden">
+        <div id="dailyExtra" class="hidden">
             <div class="row">
                 <div>
                     <label>Ek İşlem Adedi</label>
-                    <input type="number" id="extraCount" placeholder="Adet">
+                    <input id="dExtraCount" type="number">
                 </div>
                 <div>
                     <label>Ek İşlem Süresi</label>
-                    <input type="number" id="extraAvgTime" placeholder="dk">
+                    <input id="dExtraAvg" type="number">
                 </div>
             </div>
         </div>
 
         <label>Toplantı / Eğitim Süresi</label>
-        <input type="number" id="meetingTime" placeholder="dk">
+        <input id="dMeeting" type="number" placeholder="dk">
 
         <label>Günlük Not</label>
-        <textarea id="dailyNote" placeholder="İsteğe bağlı not"></textarea>
+        <textarea id="dNote" placeholder="İsteğe bağlı"></textarea>
 
-        <button class="btn-main" onclick="calculate()">Hesapla</button>
+        <button class="btn-dark" onclick="calculateDaily()">Günlük Hesapla</button>
 
-        <div id="resultArea" class="hidden">
-            <div id="mainResult" class="result"></div>
-
-            <div class="grid">
-                <div class="stat" style="background:#2980b9;" id="productionStat"></div>
-                <div class="stat" style="background:#e67e22;" id="idleStat"></div>
-                <div class="stat" style="background:#8e44ad;" id="targetStat"></div>
-                <div class="stat" style="background:#16a085;" id="instantStat"></div>
-            </div>
-
-            <div class="analysis" id="analysisBox"></div>
-
-            <button class="btn-green" onclick="saveDailyRecord()">Günü Kaydet</button>
-            <button class="btn-blue" onclick="downloadExcel()">Excel İndir</button>
-            <button class="btn-light" onclick="shareReport()">Raporu Paylaş / Kopyala</button>
-        </div>
-
-        <button class="btn-light" onclick="showHistory()">Geçmiş Kayıtları Göster</button>
-        <button class="btn-red" onclick="resetSettings()">Ayarları Sıfırla</button>
-
-        <div id="historyArea" class="hidden">
-            <h2>Geçmiş Kayıtlar</h2>
-            <div id="historyList"></div>
-        </div>
+        <div id="dailyResult" class="hidden"></div>
     </div>
+
+    <div id="monthlyPage" class="card hidden">
+        <h2>Aylık Hesaplama</h2>
+
+        <label>Ay</label>
+        <input id="mMonth" type="month">
+
+        <label>Çalışılan Gün Sayısı</label>
+        <input id="mWorkDays" type="number" placeholder="Örn: 22">
+
+        <div class="row">
+            <div>
+                <label>Toplam Dinleme</label>
+                <input id="mCount" type="number">
+            </div>
+            <div>
+                <label>Ortalama Süre</label>
+                <input id="mAvg" type="number">
+            </div>
+        </div>
+
+        <div class="row">
+            <div>
+                <label>Ek İşlem Adedi</label>
+                <input id="mExtraCount" type="number">
+            </div>
+            <div>
+                <label>Ek İşlem Süresi</label>
+                <input id="mExtraAvg" type="number">
+            </div>
+        </div>
+
+        <label>Toplam Toplantı / Eğitim Süresi</label>
+        <input id="mMeeting" type="number" placeholder="dk">
+
+        <label>Aylık Not</label>
+        <textarea id="mNote" placeholder="İsteğe bağlı"></textarea>
+
+        <button class="btn-dark" onclick="calculateMonthly()">Aylık Hesapla</button>
+
+        <div id="monthlyResult" class="hidden"></div>
+    </div>
+
+    <div id="recordsPage" class="card hidden">
+        <h2>Kayıtlar</h2>
+        <button class="btn-blue" onclick="downloadExcel()">Excel İndir</button>
+        <button class="btn-red" onclick="clearRecords()">Kayıtları Temizle</button>
+        <button class="btn-light" onclick="resetSettings()">Ayarları Sıfırla</button>
+        <div id="recordsList"></div>
+    </div>
+</div>
 
 </div>
 
 <script>
-const SETTINGS_KEY = "verimlilik_ayarlar";
-const RECORDS_KEY = "verimlilik_kayitlar";
+const SETTINGS_KEY = "pt_settings_v1";
+const RECORDS_KEY = "pt_records_v1";
 
 let settings = null;
 let lastReport = null;
 
 document.addEventListener("DOMContentLoaded", init);
 
-function init() {
-    settings = getSettings();
+function init(){
+    settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null");
 
-    if (!settings) {
+    if(!settings){
         document.getElementById("setupPage").classList.remove("hidden");
-    } else {
+    }else{
         document.getElementById("appPage").classList.remove("hidden");
         loadApp();
     }
 }
 
-function getSettings() {
-    const data = localStorage.getItem(SETTINGS_KEY);
-    return data ? JSON.parse(data) : null;
-}
+function saveSettings(){
+    const name = val("setName").trim();
+    const target = num("setTarget");
+    const start = val("setStart");
+    const end = val("setEnd");
+    const defaultTime = num("setDefaultTime");
 
-function saveSettings() {
-    const name = document.getElementById("setupName").value.trim();
-    const targetPercent = Number(document.getElementById("setupTargetPercent").value);
-    const startTime = document.getElementById("setupStartTime").value;
-    const endTime = document.getElementById("setupEndTime").value;
-    const defaultProcessTime = Number(document.getElementById("setupDefaultProcessTime").value);
-    const extraPerProcess = Number(document.getElementById("setupExtraPerProcess").value);
-    const extraCoefficient = Number(document.getElementById("setupExtraCoefficient").value);
-    const meetingCoefficient = Number(document.getElementById("setupMeetingCoefficient").value);
-
-    if (!name || !targetPercent || !startTime || !endTime || !defaultProcessTime) {
+    if(!name || !target || !start || !end || !defaultTime){
         alert("Lütfen zorunlu alanları doldur.");
         return;
     }
 
-    const totalWorkMinutes = calculateWorkMinutes(startTime, endTime);
-
-    if (totalWorkMinutes <= 0) {
+    const totalMinutes = workMinutes(start,end);
+    if(totalMinutes <= 0){
         alert("Mesai bitiş saati başlangıçtan büyük olmalı.");
         return;
     }
 
-    const targetMinutes = totalWorkMinutes * (targetPercent / 100);
-
     settings = {
         name,
-        targetPercent,
-        startTime,
-        endTime,
-        totalWorkMinutes,
-        targetMinutes,
-        defaultProcessTime,
-        extraPerProcess: extraPerProcess || 0,
-        extraCoefficient: extraCoefficient || 0.5,
-        meetingCoefficient: meetingCoefficient || 0.7
+        target,
+        start,
+        end,
+        totalMinutes,
+        targetMinutes: totalMinutes * target / 100,
+        defaultTime,
+        extraPerItem: num("setExtraPerItem"),
+        extraCoef: num("setExtraCoef") || 0.5,
+        meetingCoef: num("setMeetingCoef") || 0.7
     };
 
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
-
-    document.getElementById("setupPage").classList.add("hidden");
-    document.getElementById("appPage").classList.remove("hidden");
-
-    loadApp();
+    location.reload();
 }
 
-function loadApp() {
-    document.getElementById("dailyAvgTime").value = settings.defaultProcessTime;
-
-    document.getElementById("userInfo").innerHTML = `
+function loadApp(){
+    document.getElementById("infoBox").innerHTML = `
         👤 <b>${settings.name}</b><br>
-        🕒 Mesai: <b>${settings.startTime} - ${settings.endTime}</b><br>
-        🎯 Hedef: <b>%${settings.targetPercent}</b> |
+        🕒 Mesai: <b>${settings.start} - ${settings.end}</b> |
+        Toplam: <b>${settings.totalMinutes} dk</b><br>
+        🎯 Hedef: <b>%${settings.target}</b> |
         Hedef Süre: <b>${settings.targetMinutes.toFixed(0)} dk</b>
     `;
-}
 
-function calculateWorkMinutes(start, end) {
-    const [sh, sm] = start.split(":").map(Number);
-    const [eh, em] = end.split(":").map(Number);
+    document.getElementById("dAvg").value = settings.defaultTime;
+    document.getElementById("mAvg").value = settings.defaultTime;
 
-    const startMinutes = sh * 60 + sm;
-    const endMinutes = eh * 60 + em;
-
-    return endMinutes - startMinutes;
-}
-
-function getElapsedMinutes() {
     const now = new Date();
-
-    const [sh, sm] = settings.startTime.split(":").map(Number);
-    const [eh, em] = settings.endTime.split(":").map(Number);
-
-    const start = new Date();
-    start.setHours(sh, sm, 0, 0);
-
-    const end = new Date();
-    end.setHours(eh, em, 0, 0);
-
-    let elapsed = Math.floor((now - start) / 60000);
-    elapsed = Math.max(1, Math.min(elapsed, settings.totalWorkMinutes));
-
-    let remaining = Math.floor((end - now) / 60000);
-    remaining = Math.max(0, remaining);
-
-    return { elapsed, remaining };
+    document.getElementById("mMonth").value =
+        now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2,"0");
 }
 
-function toggleExtraFields() {
-    const enabled = document.getElementById("extraEnabled").value;
+function showTab(tab){
+    ["daily","monthly","records"].forEach(t=>{
+        document.getElementById(t+"Page").classList.add("hidden");
+        document.getElementById("tab"+cap(t)).classList.remove("active");
+    });
 
-    if (enabled === "yes") {
-        document.getElementById("extraFields").classList.remove("hidden");
-    } else {
-        document.getElementById("extraFields").classList.add("hidden");
-    }
+    document.getElementById(tab+"Page").classList.remove("hidden");
+    document.getElementById("tab"+cap(tab)).classList.add("active");
+
+    if(tab === "records") renderRecords();
 }
 
-function calculate() {
-    const dailyCount = Number(document.getElementById("dailyCount").value) || 0;
-    const dailyAvgTime = Number(document.getElementById("dailyAvgTime").value) || settings.defaultProcessTime;
+function toggleDailyExtra(){
+    const yes = val("dExtraStatus") === "yes";
+    document.getElementById("dailyExtra").classList.toggle("hidden", !yes);
+}
 
-    const extraEnabled = document.getElementById("extraEnabled").value === "yes";
-    const extraCount = extraEnabled ? Number(document.getElementById("extraCount").value) || 0 : 0;
-    const extraAvgTime = extraEnabled ? Number(document.getElementById("extraAvgTime").value) || 0 : 0;
+function calculateDaily(){
+    const count = num("dCount");
+    const avg = num("dAvg") || settings.defaultTime;
+    const meeting = num("dMeeting");
+    const note = val("dNote");
 
-    const meetingTime = Number(document.getElementById("meetingTime").value) || 0;
-    const note = document.getElementById("dailyNote").value.trim();
+    const extraOn = val("dExtraStatus") === "yes";
+    const extraCount = extraOn ? num("dExtraCount") : 0;
+    const extraAvg = extraOn ? num("dExtraAvg") : 0;
 
-    const normalProduction = dailyCount * (dailyAvgTime + settings.extraPerProcess);
-    const extraProduction = extraCount * extraAvgTime * settings.extraCoefficient;
-    const meetingProduction = meetingTime * settings.meetingCoefficient;
+    const production = calcProduction(count,avg,extraCount,extraAvg,meeting);
+    const time = elapsedToday();
 
-    const totalProduction = normalProduction + extraProduction + meetingProduction;
+    const efficiency = production.total / settings.totalMinutes * 100;
+    const instant = production.total / time.elapsed * 100;
+    const targetPerformance = production.total / settings.targetMinutes * 100;
+    const idle = Math.max(0, time.elapsed - production.total);
+    const remainingTarget = Math.max(0, settings.targetMinutes - production.total);
 
-    const generalEfficiency = (totalProduction / settings.totalWorkMinutes) * 100;
-    const targetPerformance = (totalProduction / settings.targetMinutes) * 100;
+    const currentSpeed = production.total / time.elapsed;
+    const projectedProduction = currentSpeed * settings.totalMinutes;
+    const projectedEfficiency = projectedProduction / settings.totalMinutes * 100;
 
-    const time = getElapsedMinutes();
-    const instantEfficiency = (totalProduction / time.elapsed) * 100;
+    const requiredCount = Math.ceil(remainingTarget / (avg + settings.extraPerItem));
+    const score = performanceScore(efficiency, targetPerformance, instant);
 
-    const idleMinutes = Math.max(0, time.elapsed - totalProduction);
-    const remainingTargetMinutes = Math.max(0, settings.targetMinutes - totalProduction);
-
-    const oneProcessMinute = dailyAvgTime + settings.extraPerProcess;
-    const requiredProcessCount = Math.ceil(remainingTargetMinutes / oneProcessMinute);
-
-    let statusClass = "danger";
-    let statusText = "Hedef Altında";
-
-    if (generalEfficiency >= settings.targetPercent) {
-        statusClass = "success";
-        statusText = "Hedef Tamamlandı";
-    } else if (targetPerformance >= 80) {
-        statusClass = "warning";
-        statusText = "Hedefe Yaklaşıldı";
-    }
-
-    document.getElementById("resultArea").classList.remove("hidden");
-
-    const mainResult = document.getElementById("mainResult");
-    mainResult.className = `result ${statusClass}`;
-    mainResult.innerHTML = `%${generalEfficiency.toFixed(1)}<br>${statusText}`;
-
-    document.getElementById("productionStat").innerText =
-        `${totalProduction.toFixed(0)} dk Üretim`;
-
-    document.getElementById("idleStat").innerText =
-        `${idleMinutes.toFixed(0)} dk Boş/Mola`;
-
-    document.getElementById("targetStat").innerText =
-        `${remainingTargetMinutes.toFixed(0)} dk Kalan Hedef`;
-
-    document.getElementById("instantStat").innerText =
-        `%${instantEfficiency.toFixed(1)} Anlık`;
-
-    let message = "";
-
-    if (remainingTargetMinutes <= 0) {
-        message = "✅ Bugünkü hedef tamamlandı.";
-    } else if (time.remaining <= 0) {
-        message = "⛔ Mesai bitti, hedef tamamlanmadı.";
-    } else {
-        message = `⚠️ Hedef için yaklaşık <b>${requiredProcessCount}</b> işlem daha gerekiyor.`;
-    }
-
-    document.getElementById("analysisBox").innerHTML = `
-        • Geçen süre: <b>${time.elapsed} dk</b><br>
-        • Kalan süre: <b>${time.remaining} dk</b><br>
-        • Normal üretim: <b>${normalProduction.toFixed(0)} dk</b><br>
-        • Ek işlem üretimi: <b>${extraProduction.toFixed(0)} dk</b><br>
-        • Toplantı/eğitim katkısı: <b>${meetingProduction.toFixed(0)} dk</b><br>
-        • Hedefe göre performans: <b>%${targetPerformance.toFixed(1)}</b><br><br>
-        ${message}
-    `;
+    const status = getStatus(efficiency, targetPerformance);
+    const advice = dailyAdvice(efficiency, projectedEfficiency, remainingTarget, requiredCount);
 
     lastReport = {
-        date: new Date().toLocaleDateString("tr-TR"),
-        time: new Date().toLocaleTimeString("tr-TR"),
-        name: settings.name,
-        dailyCount,
-        dailyAvgTime,
+        type:"Günlük",
+        date:new Date().toLocaleDateString("tr-TR"),
+        time:new Date().toLocaleTimeString("tr-TR"),
+        name:settings.name,
+        count,
+        avg,
         extraCount,
-        extraAvgTime,
-        meetingTime,
-        normalProduction: normalProduction.toFixed(0),
-        extraProduction: extraProduction.toFixed(0),
-        meetingProduction: meetingProduction.toFixed(0),
-        totalProduction: totalProduction.toFixed(0),
-        generalEfficiency: generalEfficiency.toFixed(1),
-        instantEfficiency: instantEfficiency.toFixed(1),
-        targetPerformance: targetPerformance.toFixed(1),
-        idleMinutes: idleMinutes.toFixed(0),
-        remainingTargetMinutes: remainingTargetMinutes.toFixed(0),
-        requiredProcessCount,
-        note,
-        statusText
+        extraAvg,
+        meeting,
+        totalProduction:production.total.toFixed(0),
+        efficiency:efficiency.toFixed(1),
+        instant:instant.toFixed(1),
+        targetPerformance:targetPerformance.toFixed(1),
+        projectedEfficiency:projectedEfficiency.toFixed(1),
+        idle:idle.toFixed(0),
+        remainingTarget:remainingTarget.toFixed(0),
+        requiredCount,
+        score,
+        status:status.text,
+        note
+    };
+
+    renderResult("dailyResult", lastReport, production, `
+        • Geçen süre: <b>${time.elapsed} dk</b><br>
+        • Kalan süre: <b>${time.remaining} dk</b><br>
+        • Gün sonu tahmini verim: <b>%${projectedEfficiency.toFixed(1)}</b><br>
+        • Performans skoru: <b>${score}/100</b><br><br>
+        ${advice}
+    `);
+}
+
+function calculateMonthly(){
+    const month = val("mMonth");
+    const workDays = num("mWorkDays");
+    const count = num("mCount");
+    const avg = num("mAvg") || settings.defaultTime;
+    const extraCount = num("mExtraCount");
+    const extraAvg = num("mExtraAvg");
+    const meeting = num("mMeeting");
+    const note = val("mNote");
+
+    if(!workDays){
+        alert("Çalışılan gün sayısını gir.");
+        return;
+    }
+
+    const monthlyWork = settings.totalMinutes * workDays;
+    const monthlyTarget = settings.targetMinutes * workDays;
+
+    const production = calcProduction(count,avg,extraCount,extraAvg,meeting);
+
+    const efficiency = production.total / monthlyWork * 100;
+    const targetPerformance = production.total / monthlyTarget * 100;
+    const dailyAvgProduction = production.total / workDays;
+    const dailyAvgCount = count / workDays;
+    const remainingTarget = Math.max(0, monthlyTarget - production.total);
+    const extraTarget = Math.max(0, production.total - monthlyTarget);
+    const requiredDaily = remainingTarget > 0 ? remainingTarget / workDays : 0;
+    const requiredCount = Math.ceil(remainingTarget / (avg + settings.extraPerItem));
+    const score = performanceScore(efficiency, targetPerformance, efficiency);
+    const status = getStatus(efficiency, targetPerformance);
+
+    lastReport = {
+        type:"Aylık",
+        date:month,
+        time:"-",
+        name:settings.name,
+        workDays,
+        count,
+        avg,
+        extraCount,
+        extraAvg,
+        meeting,
+        totalProduction:production.total.toFixed(0),
+        efficiency:efficiency.toFixed(1),
+        instant:"-",
+        targetPerformance:targetPerformance.toFixed(1),
+        projectedEfficiency:"-",
+        idle:"-",
+        remainingTarget:remainingTarget.toFixed(0),
+        requiredCount,
+        score,
+        status:status.text,
+        note
+    };
+
+    renderResult("monthlyResult", lastReport, production, `
+        • Aylık toplam mesai: <b>${monthlyWork.toFixed(0)} dk</b><br>
+        • Aylık hedef süre: <b>${monthlyTarget.toFixed(0)} dk</b><br>
+        • Günlük ortalama üretim: <b>${dailyAvgProduction.toFixed(1)} dk</b><br>
+        • Günlük ortalama dinleme: <b>${dailyAvgCount.toFixed(1)} adet</b><br>
+        • Hedef fazlası: <b>${extraTarget.toFixed(0)} dk</b><br>
+        • Eksik hedef: <b>${remainingTarget.toFixed(0)} dk</b><br>
+        • Günlük kapatılması gereken eksik: <b>${requiredDaily.toFixed(1)} dk</b><br>
+        • Performans skoru: <b>${score}/100</b>
+    `);
+}
+
+function renderResult(targetId, report, production, extraHtml){
+    const status = getStatus(Number(report.efficiency), Number(report.targetPerformance));
+
+    const html = `
+        <div class="result ${status.className}">
+            %${report.efficiency}<br>${status.text}
+        </div>
+
+        <div class="grid">
+            <div class="stat" style="background:#2980b9">${report.totalProduction} dk Üretim</div>
+            <div class="stat" style="background:#e67e22">%${report.targetPerformance} Hedef</div>
+            <div class="stat" style="background:#8e44ad">${report.remainingTarget} dk Eksik</div>
+            <div class="stat" style="background:#16a085">${report.score}/100 Skor</div>
+        </div>
+
+        <div class="analysis">
+            • Normal üretim: <b>${production.normal.toFixed(0)} dk</b><br>
+            • Ek işlem üretimi: <b>${production.extra.toFixed(0)} dk</b><br>
+            • Toplantı/eğitim katkısı: <b>${production.meeting.toFixed(0)} dk</b><br>
+            ${extraHtml}
+        </div>
+
+        <button class="btn-green" onclick="saveRecord()">Kaydet</button>
+        <button class="btn-blue" onclick="copyReport()">Raporu Kopyala / Paylaş</button>
+    `;
+
+    document.getElementById(targetId).innerHTML = html;
+    document.getElementById(targetId).classList.remove("hidden");
+}
+
+function calcProduction(count,avg,extraCount,extraAvg,meeting){
+    const normal = count * (avg + settings.extraPerItem);
+    const extra = extraCount * extraAvg * settings.extraCoef;
+    const meet = meeting * settings.meetingCoef;
+
+    return {
+        normal,
+        extra,
+        meeting:meet,
+        total:normal + extra + meet
     };
 }
 
-function saveDailyRecord() {
-    if (!lastReport) {
-        alert("Önce hesaplama yapmalısın.");
+function getStatus(efficiency, targetPerformance){
+    if(efficiency >= settings.target){
+        return {text:"Hedef Tamamlandı", className:"success"};
+    }
+    if(targetPerformance >= 80){
+        return {text:"Hedefe Yaklaşıldı", className:"warning"};
+    }
+    return {text:"Hedef Altında", className:"danger"};
+}
+
+function dailyAdvice(eff, projected, remaining, requiredCount){
+    if(eff >= settings.target){
+        return "✅ Bugünkü hedef tamamlandı. Gün kapatılabilir.";
+    }
+    if(projected >= settings.target){
+        return "✅ Bu tempoyla devam edilirse gün sonunda hedef yakalanır.";
+    }
+    return `⚠️ Hedef için yaklaşık <b>${requiredCount}</b> işlem daha gerekiyor. Eksik süre: <b>${remaining.toFixed(0)} dk</b>.`;
+}
+
+function performanceScore(efficiency,targetPerformance,instant){
+    let score = 0;
+    score += Math.min(50, efficiency / settings.target * 50);
+    score += Math.min(35, targetPerformance / 100 * 35);
+    score += Math.min(15, instant / settings.target * 15);
+    return Math.round(Math.min(100, score));
+}
+
+function saveRecord(){
+    if(!lastReport){
+        alert("Önce hesaplama yap.");
         return;
     }
 
     const records = getRecords();
     records.push(lastReport);
-
     localStorage.setItem(RECORDS_KEY, JSON.stringify(records));
-
-    alert("Günlük kayıt kaydedildi.");
+    alert("Kayıt oluşturuldu.");
 }
 
-function getRecords() {
-    const data = localStorage.getItem(RECORDS_KEY);
-    return data ? JSON.parse(data) : [];
+function getRecords(){
+    return JSON.parse(localStorage.getItem(RECORDS_KEY) || "[]");
 }
 
-function showHistory() {
-    const area = document.getElementById("historyArea");
-    const list = document.getElementById("historyList");
-
-    area.classList.toggle("hidden");
-
+function renderRecords(){
     const records = getRecords();
+    const list = document.getElementById("recordsList");
 
-    if (records.length === 0) {
-        list.innerHTML = "<p>Kayıt bulunamadı.</p>";
+    if(records.length === 0){
+        list.innerHTML = "<p class='small'>Henüz kayıt yok.</p>";
         return;
     }
 
     list.innerHTML = "";
 
-    records.slice().reverse().forEach(record => {
+    records.slice().reverse().forEach(r=>{
         const div = document.createElement("div");
         div.className = "history-item";
         div.innerHTML = `
-            <b>${record.date} - ${record.time}</b><br>
-            Personel: ${record.name}<br>
-            Verimlilik: %${record.generalEfficiency}<br>
-            Üretim: ${record.totalProduction} dk<br>
-            Durum: ${record.statusText}
+            <b>${r.type} Kayıt</b><br>
+            Tarih: ${r.date} ${r.time}<br>
+            Personel: ${r.name}<br>
+            Verimlilik: <b>%${r.efficiency}</b><br>
+            Üretim: <b>${r.totalProduction} dk</b><br>
+            Durum: <b>${r.status}</b><br>
+            Skor: <b>${r.score}/100</b>
         `;
         list.appendChild(div);
     });
 }
 
-function downloadExcel() {
+function downloadExcel(){
     const records = getRecords();
-
-    if (records.length === 0) {
-        alert("Excel için önce en az bir kayıt kaydetmelisin.");
+    if(records.length === 0){
+        alert("İndirilecek kayıt yok.");
         return;
     }
 
     let table = `
-        <table border="1">
-            <tr>
-                <th>Tarih</th>
-                <th>Saat</th>
-                <th>Personel</th>
-                <th>Dinleme Adedi</th>
-                <th>Ortalama Süre</th>
-                <th>Ek İşlem Adedi</th>
-                <th>Ek İşlem Süresi</th>
-                <th>Toplantı dk</th>
-                <th>Toplam Üretim dk</th>
-                <th>Genel Verimlilik</th>
-                <th>Anlık Verimlilik</th>
-                <th>Hedef Performansı</th>
-                <th>Boş/Mola dk</th>
-                <th>Kalan Hedef dk</th>
-                <th>Gereken İşlem</th>
-                <th>Durum</th>
-                <th>Not</th>
-            </tr>
-    `;
+    <table border="1">
+    <tr>
+        <th>Tür</th><th>Tarih</th><th>Saat</th><th>Personel</th>
+        <th>Çalışma Günü</th><th>Dinleme</th><th>Ortalama Süre</th>
+        <th>Ek İşlem</th><th>Ek Süre</th><th>Toplantı</th>
+        <th>Üretim</th><th>Verim</th><th>Hedef</th>
+        <th>Eksik</th><th>Gereken İşlem</th><th>Skor</th><th>Durum</th><th>Not</th>
+    </tr>`;
 
-    records.forEach(r => {
+    records.forEach(r=>{
         table += `
-            <tr>
-                <td>${r.date}</td>
-                <td>${r.time}</td>
-                <td>${r.name}</td>
-                <td>${r.dailyCount}</td>
-                <td>${r.dailyAvgTime}</td>
-                <td>${r.extraCount}</td>
-                <td>${r.extraAvgTime}</td>
-                <td>${r.meetingTime}</td>
-                <td>${r.totalProduction}</td>
-                <td>%${r.generalEfficiency}</td>
-                <td>%${r.instantEfficiency}</td>
-                <td>%${r.targetPerformance}</td>
-                <td>${r.idleMinutes}</td>
-                <td>${r.remainingTargetMinutes}</td>
-                <td>${r.requiredProcessCount}</td>
-                <td>${r.statusText}</td>
-                <td>${r.note || ""}</td>
-            </tr>
-        `;
+        <tr>
+            <td>${r.type}</td>
+            <td>${r.date}</td>
+            <td>${r.time}</td>
+            <td>${r.name}</td>
+            <td>${r.workDays || ""}</td>
+            <td>${r.count}</td>
+            <td>${r.avg}</td>
+            <td>${r.extraCount}</td>
+            <td>${r.extraAvg}</td>
+            <td>${r.meeting}</td>
+            <td>${r.totalProduction}</td>
+            <td>%${r.efficiency}</td>
+            <td>%${r.targetPerformance}</td>
+            <td>${r.remainingTarget}</td>
+            <td>${r.requiredCount}</td>
+            <td>${r.score}</td>
+            <td>${r.status}</td>
+            <td>${r.note || ""}</td>
+        </tr>`;
     });
 
     table += "</table>";
 
-    const blob = new Blob(["\ufeff" + table], {
-        type: "application/vnd.ms-excel"
-    });
-
+    const blob = new Blob(["\ufeff"+table], {type:"application/vnd.ms-excel"});
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
-
     a.href = url;
-    a.download = "verimlilik_raporu.xls";
+    a.download = "performans_takip_raporu.xls";
     a.click();
-
     URL.revokeObjectURL(url);
 }
 
-async function shareReport() {
-    if (!lastReport) {
-        alert("Önce hesaplama yapmalısın.");
+async function copyReport(){
+    if(!lastReport){
+        alert("Önce hesaplama yap.");
         return;
     }
 
     const text =
-`📊 Verimlilik Raporu
+`📊 ${lastReport.type} Performans Raporu
 
 Personel: ${lastReport.name}
 Tarih: ${lastReport.date}
-Genel Verimlilik: %${lastReport.generalEfficiency}
-Anlık Verimlilik: %${lastReport.instantEfficiency}
+Verimlilik: %${lastReport.efficiency}
+Hedef Performansı: %${lastReport.targetPerformance}
 Toplam Üretim: ${lastReport.totalProduction} dk
-Boş/Mola: ${lastReport.idleMinutes} dk
-Kalan Hedef: ${lastReport.remainingTargetMinutes} dk
-Durum: ${lastReport.statusText}`;
+Eksik Hedef: ${lastReport.remainingTarget} dk
+Gereken İşlem: ${lastReport.requiredCount}
+Skor: ${lastReport.score}/100
+Durum: ${lastReport.status}`;
 
-    if (navigator.share) {
-        await navigator.share({ text });
-    } else {
+    if(navigator.share){
+        await navigator.share({text});
+    }else{
         await navigator.clipboard.writeText(text);
         alert("Rapor kopyalandı.");
     }
 }
 
-function resetSettings() {
-    const ok = confirm("Ayarları sıfırlamak istiyor musun? Kayıtlar silinmez.");
+function clearRecords(){
+    if(confirm("Tüm kayıtlar silinsin mi?")){
+        localStorage.removeItem(RECORDS_KEY);
+        renderRecords();
+    }
+}
 
-    if (!ok) return;
+function resetSettings(){
+    if(confirm("Ayarlar sıfırlansın mı? Kayıtlar silinmez.")){
+        localStorage.removeItem(SETTINGS_KEY);
+        location.reload();
+    }
+}
 
-    localStorage.removeItem(SETTINGS_KEY);
-    location.reload();
+function elapsedToday(){
+    const now = new Date();
+
+    const [sh,sm] = settings.start.split(":").map(Number);
+    const [eh,em] = settings.end.split(":").map(Number);
+
+    const start = new Date();
+    start.setHours(sh,sm,0,0);
+
+    const end = new Date();
+    end.setHours(eh,em,0,0);
+
+    let elapsed = Math.floor((now - start) / 60000);
+    elapsed = Math.max(1, Math.min(elapsed, settings.totalMinutes));
+
+    let remaining = Math.floor((end - now) / 60000);
+    remaining = Math.max(0, remaining);
+
+    return {elapsed,remaining};
+}
+
+function workMinutes(start,end){
+    const [sh,sm] = start.split(":").map(Number);
+    const [eh,em] = end.split(":").map(Number);
+    return (eh*60+em) - (sh*60+sm);
+}
+
+function val(id){
+    return document.getElementById(id).value;
+}
+
+function num(id){
+    return Number(document.getElementById(id).value) || 0;
+}
+
+function cap(s){
+    return s.charAt(0).toUpperCase() + s.slice(1);
 }
 </script>
 

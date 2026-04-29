@@ -112,6 +112,12 @@ textarea{
     gap:10px;
 }
 
+.menu-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
 button{
     width:100%;
     border:0;
@@ -128,9 +134,9 @@ button{
 .btn-green{background:var(--green);color:white}
 .btn-red{background:var(--red);color:white}
 .btn-light{background:#eef2f7;color:var(--navy)}
+.btn-orange{background:var(--orange);color:white}
 .btn-whatsapp{background:var(--whatsapp);color:white}
 .btn-gmail{background:var(--gmail);color:white}
-.btn-orange{background:var(--orange);color:white}
 
 .hidden{display:none!important}
 
@@ -139,12 +145,6 @@ button{
     color:var(--gray);
     font-size:12px;
     line-height:1.5;
-}
-
-.menu-grid{
-    display:grid;
-    grid-template-columns:1fr 1fr;
-    gap:10px;
 }
 
 .login-icon{
@@ -334,28 +334,6 @@ canvas{
     margin-top:10px;
 }
 
-.table-wrap{
-    overflow:auto;
-    margin-top:10px;
-}
-
-table{
-    width:100%;
-    border-collapse:collapse;
-    font-size:13px;
-}
-
-th,td{
-    border:1px solid var(--line);
-    padding:9px;
-    text-align:left;
-}
-
-th{
-    background:#eef2f7;
-    color:var(--navy);
-}
-
 @media(max-width:620px){
     .row,.user-card,.stats,.menu-grid{
         grid-template-columns:1fr;
@@ -379,103 +357,88 @@ th{
 
     <div id="homePage" class="card hidden">
         <h2>Ana Sayfa</h2>
-        <p class="small">Kullanıcı girişi yapabilir veya yönetici panelinden kullanıcıları yönetebilirsin.</p>
+        <p class="small">Devam etmek için kayıtlı kullanıcı girişi yapabilir veya yeni kullanıcı oluşturabilirsin.</p>
 
         <div class="menu-grid">
-            <button class="btn-primary" onclick="showOnly('loginPage')">👤 Kullanıcı Girişi</button>
-            <button class="btn-blue" onclick="showOnly('adminLoginPage')">🛠️ Yönetici Girişi</button>
+            <button class="btn-primary" onclick="showOnly('loginPage')">👤 Kayıtlı Kullanıcı</button>
+            <button class="btn-green" onclick="showOnly('registerPage')">➕ Yeni Kullanıcı</button>
         </div>
 
-        <button class="btn-light" onclick="showOnly('firstSetupPage')">⚙️ İlk Kurulum</button>
-    </div>
-
-    <div id="firstSetupPage" class="card hidden">
-        <h2>İlk Kurulum - Yönetici Oluştur</h2>
-
-        <label>Yönetici Adı</label>
-        <input id="adminSetupName" placeholder="Ad Soyad">
-
-        <label>Yönetici PIN</label>
-        <input id="adminSetupPin" type="password" placeholder="Örn: 1234">
-
-        <button class="btn-primary" onclick="createAdmin()">Yöneticiyi Oluştur</button>
-        <button class="btn-light" onclick="showOnly('homePage')">Geri Dön</button>
-
-        <p class="small">PIN bilgisi SHA-256 ile cihaz içinde hash olarak saklanır.</p>
-    </div>
-
-    <div id="adminLoginPage" class="card hidden">
-        <div class="login-icon">🛠️</div>
-        <h2>Yönetici Girişi</h2>
-
-        <label>Yönetici PIN</label>
-        <input id="adminLoginPin" type="password" placeholder="PIN">
-
-        <button class="btn-primary" onclick="adminLogin()">Giriş Yap</button>
-        <button class="btn-light" onclick="showOnly('homePage')">Ana Sayfa</button>
+        <p class="small">Giriş yaptıktan sonra çıkış yapılmadığı sürece oturum açık kalır.</p>
     </div>
 
     <div id="loginPage" class="card hidden">
-        <div class="login-icon">🎧</div>
-        <h2>Kullanıcı Girişi</h2>
+        <div class="login-icon">👤</div>
+        <h2>Kayıtlı Kullanıcı Girişi</h2>
 
-        <label>Kullanıcı</label>
-        <select id="loginUserSelect"></select>
+        <label>Kullanıcı Adı</label>
+        <input id="loginName" placeholder="Ad Soyad">
 
-        <label>PIN Kodu</label>
+        <label>PIN / Şifre</label>
         <input id="loginPin" type="password" placeholder="PIN">
 
-        <button class="btn-primary" onclick="userLogin()">Giriş Yap</button>
+        <button class="btn-primary" onclick="login()">Giriş Yap</button>
         <button class="btn-light" onclick="showOnly('homePage')">Ana Sayfa</button>
+    </div>
+
+    <div id="registerPage" class="card hidden">
+        <h2>Yeni Kullanıcı</h2>
+
+        <div id="firstUserInfo" class="ok-box hidden">
+            İlk oluşturulan kullanıcı otomatik olarak <b>Yönetici</b> olur.
+        </div>
+
+        <label>Kullanıcı Adı</label>
+        <input id="regName" placeholder="Ad Soyad">
+
+        <label>PIN / Şifre</label>
+        <input id="regPin" type="password" placeholder="Örn: 1234">
+
+        <label>Hedef Verimlilik (%)</label>
+        <input id="regTarget" type="number" value="75">
+
+        <div class="row">
+            <div>
+                <label>Mesai Başlangıç</label>
+                <input id="regStart" type="time" value="08:30">
+            </div>
+            <div>
+                <label>Mesai Bitiş</label>
+                <input id="regEnd" type="time" value="18:45">
+            </div>
+        </div>
+
+        <label>Günlük Mola Süresi (dk)</label>
+        <input id="regBreak" type="number" value="75">
+
+        <label>Varsayılan Dinleme Süresi (dk)</label>
+        <input id="regDefaultTime" type="number" value="10">
+
+        <label>Dinleme Başı Ek Süre (dk)</label>
+        <input id="regExtraPerItem" type="number" value="2">
+
+        <label>Ek İşlem Katsayısı</label>
+        <input id="regExtraCoef" type="number" step="0.01" value="0.5">
+
+        <label>Toplantı / Coaching Katsayısı</label>
+        <input id="regMeetingCoef" type="number" step="0.01" value="0.7">
+
+        <button class="btn-green" onclick="registerUser()">Kullanıcı Oluştur</button>
+        <button class="btn-light" onclick="showOnly('homePage')">Ana Sayfa</button>
+
+        <p class="small">Kullanıcı oluşturulduktan sonra ayarlar kilitlenir. Değişiklik sadece yönetici tarafından yapılabilir.</p>
     </div>
 
     <div id="adminPage" class="hidden">
 
         <div class="card">
             <h2>Yönetici Paneli</h2>
-            <p class="small" id="adminInfo"></p>
-            <button class="btn-light" onclick="logout()">Çıkış Yap</button>
-        </div>
-
-        <div class="card">
-            <h2>Yeni Kullanıcı Ekle</h2>
-
-            <label>Uzman Adı</label>
-            <input id="newUserName" placeholder="Ad Soyad">
-
-            <label>Kullanıcı PIN</label>
-            <input id="newUserPin" type="password" placeholder="Örn: 1234">
-
-            <label>Hedef Verimlilik (%)</label>
-            <input id="newTarget" type="number" value="75">
-
-            <div class="row">
-                <div>
-                    <label>Mesai Başlangıç</label>
-                    <input id="newStart" type="time" value="08:30">
-                </div>
-                <div>
-                    <label>Mesai Bitiş</label>
-                    <input id="newEnd" type="time" value="18:45">
-                </div>
+            <div class="user-card">
+                <div class="user-box">👤 Yönetici <b id="adminNameBox"></b></div>
+                <div class="user-box">👥 Kullanıcı <b id="adminUserCount"></b></div>
             </div>
-
-            <label>Günlük Mola Süresi (dk)</label>
-            <input id="newBreak" type="number" value="75">
-
-            <label>Varsayılan Dinleme Süresi (dk)</label>
-            <input id="newDefaultTime" type="number" value="10">
-
-            <label>Dinleme Başı Ek Süre (dk)</label>
-            <input id="newExtraPerItem" type="number" value="2">
-
-            <label>Ek İşlem Katsayısı</label>
-            <input id="newExtraCoef" type="number" step="0.01" value="0.5">
-
-            <label>Toplantı / Coaching Katsayısı</label>
-            <input id="newMeetingCoef" type="number" step="0.01" value="0.7">
-
-            <button class="btn-green" onclick="addUser()">Kullanıcı Ekle</button>
+            <button class="btn-primary" onclick="showOnly('appPage');loadApp()">Kendi Performans Panelim</button>
+            <button class="btn-light" onclick="logout()">Çıkış Yap</button>
         </div>
 
         <div class="card">
@@ -507,9 +470,10 @@ th{
             </div>
 
             <div class="lock-box">
-                🔒 Bu kullanıcının temel ayarları kilitlidir. Değişiklik sadece yönetici panelinden yapılabilir.
+                🔒 Bu kullanıcının temel ayarları kilitlidir. Değişiklik sadece yönetici tarafından yapılabilir.
             </div>
 
+            <button id="adminBackButton" class="btn-blue hidden" onclick="showOnly('adminPage');loadAdmin()">Yönetici Paneline Dön</button>
             <button class="btn-light" onclick="logout()">Çıkış Yap</button>
         </div>
 
@@ -632,19 +596,17 @@ th{
 </div>
 
 <script>
-const DB_KEY = "performance_panel_pro_database_v1";
-const SESSION_KEY = "performance_panel_pro_session_v1";
+const DB_KEY = "performance_panel_final_db_v2";
+const SESSION_KEY = "performance_panel_final_session_v2";
 
 let db = null;
 let activeUser = null;
-let activeRole = null;
 let lastReport = null;
 
 document.addEventListener("DOMContentLoaded", init);
 
 function defaultDb(){
     return {
-        admin:null,
         users:[],
         createdAt:new Date().toISOString()
     };
@@ -661,47 +623,57 @@ function saveDb(){
 function init(){
     db = loadDb();
 
-    const session = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+    const sessionUserId = localStorage.getItem(SESSION_KEY);
 
-    if(session && session.role === "admin" && db.admin){
-        activeRole = "admin";
-        showOnly("adminPage");
-        loadAdmin();
-        return;
-    }
-
-    if(session && session.role === "user"){
-        const user = db.users.find(u => u.id === session.userId);
+    if(sessionUserId){
+        const user = db.users.find(u => u.id === sessionUserId);
         if(user){
-            activeRole = "user";
             activeUser = user;
-            showOnly("appPage");
-            loadApp();
+
+            if(user.role === "admin"){
+                showOnly("adminPage");
+                loadAdmin();
+            }else{
+                showOnly("appPage");
+                loadApp();
+            }
+
             return;
+        }else{
+            localStorage.removeItem(SESSION_KEY);
         }
     }
 
-    if(!db.admin){
-        showOnly("firstSetupPage");
-    }else{
-        showOnly("homePage");
-        fillUserSelect();
-    }
+    showOnly("homePage");
+    updateFirstUserInfo();
 }
 
 function showOnly(id){
-    ["homePage","firstSetupPage","adminLoginPage","loginPage","adminPage","appPage"].forEach(page=>{
+    [
+        "homePage",
+        "loginPage",
+        "registerPage",
+        "adminPage",
+        "appPage"
+    ].forEach(page=>{
         document.getElementById(page).classList.add("hidden");
     });
 
     document.getElementById(id).classList.remove("hidden");
 
-    if(id === "loginPage"){
-        fillUserSelect();
+    if(id === "registerPage"){
+        updateFirstUserInfo();
     }
+}
 
-    if(id === "adminPage"){
-        loadAdmin();
+function updateFirstUserInfo(){
+    const box = document.getElementById("firstUserInfo");
+    if(!box) return;
+
+    if(db.users.length === 0){
+        box.classList.remove("hidden");
+    }else{
+        box.classList.add("hidden");
     }
 }
 
@@ -713,125 +685,23 @@ async function sha256(text){
         .join("");
 }
 
-async function createAdmin(){
-    const name = val("adminSetupName").trim();
-    const pin = val("adminSetupPin").trim();
-
-    if(!name || !pin){
-        alert("Yönetici adı ve PIN zorunludur.");
-        return;
-    }
-
-    db.admin = {
-        name,
-        pinHash: await sha256(pin),
-        createdAt:new Date().toISOString()
-    };
-
-    saveDb();
-    alert("Yönetici oluşturuldu.");
-    showOnly("homePage");
-}
-
-async function adminLogin(){
-    if(!db.admin){
-        alert("Önce ilk kurulumu yapmalısın.");
-        showOnly("firstSetupPage");
-        return;
-    }
-
-    const pin = val("adminLoginPin").trim();
-    const pinHash = await sha256(pin);
-
-    if(pinHash !== db.admin.pinHash){
-        alert("Yönetici PIN hatalı.");
-        return;
-    }
-
-    activeRole = "admin";
-    localStorage.setItem(SESSION_KEY, JSON.stringify({role:"admin"}));
-    showOnly("adminPage");
-    loadAdmin();
-}
-
-function fillUserSelect(){
-    const select = document.getElementById("loginUserSelect");
-    select.innerHTML = "";
-
-    if(db.users.length === 0){
-        const opt = document.createElement("option");
-        opt.value = "";
-        opt.textContent = "Kayıtlı kullanıcı yok";
-        select.appendChild(opt);
-        return;
-    }
-
-    db.users.forEach(user=>{
-        const opt = document.createElement("option");
-        opt.value = user.id;
-        opt.textContent = user.name;
-        select.appendChild(opt);
-    });
-}
-
-async function userLogin(){
-    const userId = val("loginUserSelect");
-    const pin = val("loginPin").trim();
-
-    if(!userId || !pin){
-        alert("Kullanıcı ve PIN seçmelisin.");
-        return;
-    }
-
-    const user = db.users.find(u => u.id === userId);
-    if(!user){
-        alert("Kullanıcı bulunamadı.");
-        return;
-    }
-
-    const pinHash = await sha256(pin);
-
-    if(pinHash !== user.pinHash){
-        alert("PIN hatalı.");
-        return;
-    }
-
-    activeRole = "user";
-    activeUser = user;
-    localStorage.setItem(SESSION_KEY, JSON.stringify({role:"user", userId:user.id}));
-
-    showOnly("appPage");
-    loadApp();
-}
-
-function logout(){
-    localStorage.removeItem(SESSION_KEY);
-    activeUser = null;
-    activeRole = null;
-    lastReport = null;
-    location.reload();
-}
-
-function loadAdmin(){
-    if(!db.admin) return;
-
-    document.getElementById("adminInfo").innerText =
-        `Yönetici: ${db.admin.name} | Toplam kullanıcı: ${db.users.length}`;
-
-    renderAdminUsers();
-}
-
-async function addUser(){
-    const name = val("newUserName").trim();
-    const pin = val("newUserPin").trim();
-    const target = num("newTarget");
-    const start = val("newStart");
-    const end = val("newEnd");
-    const breakMinutes = num("newBreak");
-    const defaultTime = num("newDefaultTime");
+async function registerUser(){
+    const name = val("regName").trim();
+    const pin = val("regPin").trim();
+    const target = num("regTarget");
+    const start = val("regStart");
+    const end = val("regEnd");
+    const breakMinutes = num("regBreak");
+    const defaultTime = num("regDefaultTime");
 
     if(!name || !pin || !target || !start || !end || !defaultTime){
         alert("Zorunlu alanları doldur.");
+        return;
+    }
+
+    const duplicate = db.users.some(u => u.name.toLowerCase() === name.toLowerCase());
+    if(duplicate){
+        alert("Bu kullanıcı adı zaten kayıtlı.");
         return;
     }
 
@@ -848,10 +718,13 @@ async function addUser(){
         return;
     }
 
+    const role = db.users.length === 0 ? "admin" : "user";
+
     const user = {
         id:"u_" + Date.now(),
         name,
-        pinHash: await sha256(pin),
+        role,
+        pinHash:await sha256(pin),
         settingsLocked:true,
         settings:{
             target,
@@ -862,9 +735,9 @@ async function addUser(){
             netMinutes,
             targetMinutes: netMinutes * target / 100,
             defaultTime,
-            extraPerItem: num("newExtraPerItem"),
-            extraCoef: num("newExtraCoef") || 0.5,
-            meetingCoef: num("newMeetingCoef") || 0.7
+            extraPerItem:num("regExtraPerItem"),
+            extraCoef:num("regExtraCoef") || 0.5,
+            meetingCoef:num("regMeetingCoef") || 0.7
         },
         records:[],
         createdAt:new Date().toISOString()
@@ -873,23 +746,73 @@ async function addUser(){
     db.users.push(user);
     saveDb();
 
-    alert("Kullanıcı eklendi.");
-    clearNewUserForm();
-    renderAdminUsers();
-    fillUserSelect();
+    activeUser = user;
+    localStorage.setItem(SESSION_KEY, user.id);
+
+    alert(role === "admin" ? "İlk kullanıcı yönetici olarak oluşturuldu." : "Kullanıcı oluşturuldu.");
+
+    if(role === "admin"){
+        showOnly("adminPage");
+        loadAdmin();
+    }else{
+        showOnly("appPage");
+        loadApp();
+    }
 }
 
-function clearNewUserForm(){
-    document.getElementById("newUserName").value = "";
-    document.getElementById("newUserPin").value = "";
-    document.getElementById("newTarget").value = 75;
-    document.getElementById("newStart").value = "08:30";
-    document.getElementById("newEnd").value = "18:45";
-    document.getElementById("newBreak").value = 75;
-    document.getElementById("newDefaultTime").value = 10;
-    document.getElementById("newExtraPerItem").value = 2;
-    document.getElementById("newExtraCoef").value = 0.5;
-    document.getElementById("newMeetingCoef").value = 0.7;
+async function login(){
+    const name = val("loginName").trim();
+    const pin = val("loginPin").trim();
+
+    if(!name || !pin){
+        alert("Kullanıcı adı ve PIN gir.");
+        return;
+    }
+
+    const user = db.users.find(u => u.name.toLowerCase() === name.toLowerCase());
+
+    if(!user){
+        alert("Kullanıcı bulunamadı.");
+        return;
+    }
+
+    const pinHash = await sha256(pin);
+
+    if(pinHash !== user.pinHash){
+        alert("PIN hatalı.");
+        return;
+    }
+
+    activeUser = user;
+    localStorage.setItem(SESSION_KEY, user.id);
+
+    if(user.role === "admin"){
+        showOnly("adminPage");
+        loadAdmin();
+    }else{
+        showOnly("appPage");
+        loadApp();
+    }
+}
+
+function logout(){
+    localStorage.removeItem(SESSION_KEY);
+    activeUser = null;
+    lastReport = null;
+    location.reload();
+}
+
+function loadAdmin(){
+    if(!activeUser || activeUser.role !== "admin"){
+        alert("Bu alan sadece yönetici içindir.");
+        showOnly("homePage");
+        return;
+    }
+
+    document.getElementById("adminNameBox").innerText = activeUser.name;
+    document.getElementById("adminUserCount").innerText = db.users.length;
+
+    renderAdminUsers();
 }
 
 function renderAdminUsers(){
@@ -904,10 +827,12 @@ function renderAdminUsers(){
 
     db.users.forEach(user=>{
         const s = user.settings;
+        const badge = user.role === "admin" ? "Yönetici" : "Kullanıcı";
+
         const div = document.createElement("div");
         div.className = "record";
         div.innerHTML = `
-            <span class="badge blue">Kullanıcı</span>
+            <span class="badge ${user.role === "admin" ? "green" : "blue"}">${badge}</span>
             <br><br>
             <b>${escapeHtml(user.name)}</b><br>
             Hedef: <b>%${s.target}</b><br>
@@ -916,11 +841,15 @@ function renderAdminUsers(){
             Kayıt sayısı: <b>${user.records.length}</b><br>
             Ayar durumu: <b>${user.settingsLocked ? "Kilitli" : "Açık"}</b>
 
+            <button class="btn-primary" onclick="openUserAsAdmin('${user.id}')">
+                Bu Kullanıcının Panelini Aç
+            </button>
+
             <button class="btn-orange" onclick="toggleUserLock('${user.id}')">
                 ${user.settingsLocked ? "Ayar Kilidini Aç" : "Ayarı Kilitle"}
             </button>
 
-            <button class="btn-blue" onclick="editUserPrompt('${user.id}')">
+            <button class="btn-blue" onclick="editUserSettings('${user.id}')">
                 Ayarları Düzenle
             </button>
 
@@ -933,6 +862,15 @@ function renderAdminUsers(){
     });
 }
 
+function openUserAsAdmin(userId){
+    const user = db.users.find(u => u.id === userId);
+    if(!user) return;
+
+    activeUser = user;
+    showOnly("appPage");
+    loadApp(true);
+}
+
 function toggleUserLock(userId){
     const user = db.users.find(u => u.id === userId);
     if(!user) return;
@@ -942,7 +880,7 @@ function toggleUserLock(userId){
     renderAdminUsers();
 }
 
-function editUserPrompt(userId){
+function editUserSettings(userId){
     const user = db.users.find(u => u.id === userId);
     if(!user) return;
 
@@ -954,18 +892,26 @@ function editUserPrompt(userId){
     const s = user.settings;
 
     const target = Number(prompt("Hedef verimlilik (%)", s.target));
+    const start = prompt("Mesai başlangıç", s.start);
+    const end = prompt("Mesai bitiş", s.end);
     const breakMinutes = Number(prompt("Mola süresi (dk)", s.breakMinutes));
     const defaultTime = Number(prompt("Varsayılan dinleme süresi (dk)", s.defaultTime));
     const extraPerItem = Number(prompt("Dinleme başı ek süre (dk)", s.extraPerItem));
     const extraCoef = Number(prompt("Ek işlem katsayısı", s.extraCoef));
     const meetingCoef = Number(prompt("Toplantı katsayısı", s.meetingCoef));
 
-    if(!target || !defaultTime){
+    if(!target || !start || !end || !defaultTime){
         alert("Geçersiz değer.");
         return;
     }
 
-    const netMinutes = s.totalMinutes - breakMinutes;
+    const totalMinutes = workMinutes(start,end);
+    const netMinutes = totalMinutes - breakMinutes;
+
+    if(totalMinutes <= 0){
+        alert("Mesai saatleri geçersiz.");
+        return;
+    }
 
     if(netMinutes <= 0){
         alert("Mola süresi toplam mesaiden büyük olamaz.");
@@ -973,8 +919,10 @@ function editUserPrompt(userId){
     }
 
     user.settings = {
-        ...s,
         target,
+        start,
+        end,
+        totalMinutes,
         breakMinutes,
         netMinutes,
         targetMinutes: netMinutes * target / 100,
@@ -987,22 +935,34 @@ function editUserPrompt(userId){
     user.settingsLocked = true;
     saveDb();
     renderAdminUsers();
+
     alert("Ayarlar güncellendi ve tekrar kilitlendi.");
 }
 
 function deleteUser(userId){
+    if(db.users.length === 1){
+        alert("Sistemdeki son kullanıcı silinemez.");
+        return;
+    }
+
+    if(userId === activeUser.id){
+        alert("Aktif oturumdaki kullanıcı silinemez.");
+        return;
+    }
+
     if(!confirm("Bu kullanıcı ve tüm kayıtları silinsin mi?")) return;
 
     db.users = db.users.filter(u => u.id !== userId);
     saveDb();
     renderAdminUsers();
-    fillUserSelect();
 }
 
-function loadApp(){
+function loadApp(fromAdmin=false){
     const s = activeUser.settings;
 
-    document.getElementById("infoName").innerText = activeUser.name;
+    document.getElementById("infoName").innerText =
+        activeUser.name + (activeUser.role === "admin" ? " (Yönetici)" : "");
+
     document.getElementById("infoTarget").innerText =
         `%${s.target} = ${s.targetMinutes.toFixed(0)} dk`;
 
@@ -1018,6 +978,13 @@ function loadApp(){
     const now = new Date();
     document.getElementById("mMonth").value =
         now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2,"0");
+
+    document.getElementById("adminBackButton").classList.toggle(
+        "hidden",
+        !(fromAdmin || activeUser.role === "admin")
+    );
+
+    showTab("daily");
 }
 
 function showTab(tab){
@@ -1518,6 +1485,7 @@ function drawBarChart(canvasId, records, key, label, targetLine){
     const barWidth = Math.max(14, (chartWidth / records.length) - barGap);
 
     const targetY = 30 + chartHeight - ((targetLine / maxValue) * chartHeight);
+
     ctx.strokeStyle = "#dc2626";
     ctx.setLineDash([6,4]);
     ctx.beginPath();
@@ -1603,7 +1571,7 @@ function downloadUserJSON(){
 }
 
 function factoryReset(){
-    if(!confirm("Tüm kullanıcılar, yönetici ve kayıtlar silinsin mi?")) return;
+    if(!confirm("Tüm kullanıcılar ve kayıtlar silinsin mi?")) return;
     if(!confirm("Bu işlem geri alınamaz. Emin misin?")) return;
 
     localStorage.removeItem(DB_KEY);

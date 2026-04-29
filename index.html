@@ -3,161 +3,1655 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Performans Paneli PRO</title>
+<title>Performans Takip Paneli PRO</title>
 
 <style>
-body{font-family:Arial;margin:0;background:#f1f5f9}
-.container{max-width:700px;margin:auto;padding:15px}
-.card{background:white;padding:15px;border-radius:12px;margin-bottom:10px}
-button{padding:10px;width:100%;margin-top:8px;border:none;border-radius:8px;cursor:pointer}
-.primary{background:#1e3a8a;color:white}
-.green{background:#16a34a;color:white}
-.red{background:#dc2626;color:white}
-input{width:100%;padding:10px;margin-top:5px}
-.hidden{display:none}
+:root{
+    --navy:#172554;
+    --blue:#2563eb;
+    --green:#16a34a;
+    --orange:#f59e0b;
+    --red:#dc2626;
+    --gray:#64748b;
+    --bg:#f8fafc;
+    --card:#ffffff;
+    --line:#e2e8f0;
+    --text:#0f172a;
+    --whatsapp:#25D366;
+    --gmail:#ea4335;
+}
+
+*{box-sizing:border-box}
+
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+}
+
+.app{
+    max-width:820px;
+    margin:auto;
+    padding:14px;
+}
+
+.hero{
+    background:linear-gradient(135deg,#172554,#2563eb);
+    color:white;
+    padding:24px;
+    border-radius:0 0 26px 26px;
+    margin:-14px -14px 16px -14px;
+}
+
+.hero h1{
+    margin:0;
+    font-size:25px;
+}
+
+.hero p{
+    margin:7px 0 0;
+    opacity:.9;
+    font-size:14px;
+}
+
+.card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:20px;
+    padding:18px;
+    margin-bottom:14px;
+    box-shadow:0 8px 22px rgba(15,23,42,.06);
+}
+
+h2{
+    margin:0 0 12px;
+    font-size:18px;
+    color:var(--navy);
+}
+
+h3{
+    margin:16px 0 8px;
+    color:var(--navy);
+    font-size:15px;
+}
+
+label{
+    display:block;
+    margin-top:12px;
+    margin-bottom:6px;
+    font-size:12px;
+    font-weight:800;
+    color:var(--gray);
+    text-transform:uppercase;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:13px;
+    border:1px solid var(--line);
+    border-radius:14px;
+    background:#f8fafc;
+    font-size:15px;
+    outline:none;
+}
+
+input:focus,select:focus,textarea:focus{
+    border-color:var(--blue);
+    background:white;
+}
+
+textarea{
+    min-height:70px;
+    resize:vertical;
+}
+
+.row{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+button{
+    width:100%;
+    border:0;
+    border-radius:14px;
+    padding:14px;
+    margin-top:12px;
+    font-size:15px;
+    font-weight:800;
+    cursor:pointer;
+}
+
+.btn-primary{background:var(--navy);color:white}
+.btn-blue{background:var(--blue);color:white}
+.btn-green{background:var(--green);color:white}
+.btn-red{background:var(--red);color:white}
+.btn-light{background:#eef2f7;color:var(--navy)}
+.btn-whatsapp{background:var(--whatsapp);color:white}
+.btn-gmail{background:var(--gmail);color:white}
+.btn-orange{background:var(--orange);color:white}
+
+.hidden{display:none!important}
+
+.small{
+    text-align:center;
+    color:var(--gray);
+    font-size:12px;
+    line-height:1.5;
+}
+
+.menu-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.login-icon{
+    font-size:48px;
+    text-align:center;
+    margin-bottom:8px;
+}
+
+.user-card{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    font-size:13px;
+}
+
+.user-box{
+    background:#f8fafc;
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:12px;
+}
+
+.user-box b{
+    display:block;
+    color:var(--navy);
+    margin-top:4px;
+    font-size:16px;
+}
+
+.tabs{
+    display:grid;
+    grid-template-columns:1fr 1fr 1fr 1fr;
+    gap:8px;
+}
+
+.tabs button{
+    margin:0;
+    background:#eef2f7;
+    color:var(--navy);
+    font-size:13px;
+    padding:12px 8px;
+}
+
+.tabs .active{
+    background:var(--navy);
+    color:white;
+}
+
+.result-card{
+    color:white;
+    border-radius:22px;
+    padding:22px;
+    margin-top:16px;
+}
+
+.result-card.success{background:linear-gradient(135deg,#15803d,#22c55e)}
+.result-card.warning{background:linear-gradient(135deg,#d97706,#fbbf24)}
+.result-card.danger{background:linear-gradient(135deg,#b91c1c,#ef4444)}
+
+.big-percent{
+    font-size:42px;
+    font-weight:900;
+    line-height:1;
+}
+
+.status{
+    margin-top:6px;
+    font-size:15px;
+    font-weight:800;
+}
+
+.progress-wrap{
+    margin-top:16px;
+    background:rgba(255,255,255,.3);
+    height:12px;
+    border-radius:999px;
+    overflow:hidden;
+}
+
+.progress-bar{
+    height:100%;
+    background:white;
+    width:0%;
+    border-radius:999px;
+}
+
+.progress-text{
+    margin-top:8px;
+    font-size:13px;
+    opacity:.95;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-top:12px;
+}
+
+.stat{
+    border:1px solid var(--line);
+    background:#f8fafc;
+    border-radius:18px;
+    padding:14px;
+}
+
+.stat span{
+    display:block;
+    color:var(--gray);
+    font-size:12px;
+    font-weight:800;
+    text-transform:uppercase;
+}
+
+.stat b{
+    display:block;
+    margin-top:5px;
+    color:var(--navy);
+    font-size:20px;
+}
+
+.advice{
+    margin-top:12px;
+    padding:14px;
+    background:#fffbeb;
+    border:1px solid #fde68a;
+    border-left:6px solid var(--orange);
+    border-radius:16px;
+    line-height:1.55;
+    font-size:14px;
+}
+
+.record{
+    border:1px solid var(--line);
+    background:#f8fafc;
+    border-radius:16px;
+    padding:14px;
+    margin-top:10px;
+    font-size:14px;
+    line-height:1.5;
+}
+
+.badge{
+    display:inline-block;
+    padding:5px 9px;
+    border-radius:999px;
+    color:white;
+    font-size:12px;
+    font-weight:800;
+}
+
+.badge.green{background:var(--green)}
+.badge.orange{background:var(--orange)}
+.badge.red{background:var(--red)}
+.badge.blue{background:var(--blue)}
+.badge.gray{background:var(--gray)}
+
+.lock-box{
+    background:#fef2f2;
+    border:1px solid #fecaca;
+    border-left:6px solid var(--red);
+    border-radius:16px;
+    padding:13px;
+    font-size:14px;
+    line-height:1.5;
+    margin-top:10px;
+}
+
+.ok-box{
+    background:#ecfdf5;
+    border:1px solid #bbf7d0;
+    border-left:6px solid var(--green);
+    border-radius:16px;
+    padding:13px;
+    font-size:14px;
+    line-height:1.5;
+    margin-top:10px;
+}
+
+canvas{
+    width:100%;
+    max-width:100%;
+    background:#f8fafc;
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:10px;
+    margin-top:10px;
+}
+
+.table-wrap{
+    overflow:auto;
+    margin-top:10px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:13px;
+}
+
+th,td{
+    border:1px solid var(--line);
+    padding:9px;
+    text-align:left;
+}
+
+th{
+    background:#eef2f7;
+    color:var(--navy);
+}
+
+@media(max-width:620px){
+    .row,.user-card,.stats,.menu-grid{
+        grid-template-columns:1fr;
+    }
+
+    .tabs{
+        grid-template-columns:1fr 1fr;
+    }
+}
 </style>
 </head>
 
 <body>
-<div class="container">
 
-<div id="home" class="card">
-<h2>Ana Menü</h2>
-<button class="primary" onclick="show('login')">Giriş Yap</button>
-<button onclick="show('setup')">İlk Kurulum</button>
-</div>
+<div class="app">
 
-<div id="setup" class="card hidden">
-<h2>Yönetici Oluştur</h2>
-<input id="adminName" placeholder="Ad">
-<input id="adminPin" type="password" placeholder="PIN">
-<button class="primary" onclick="createAdmin()">Kaydet</button>
-</div>
+    <div class="hero">
+        <h1>🎧 Performans Takip Paneli PRO</h1>
+        <p>Çok kullanıcılı kalite uzmanı verimlilik ve performans takip sistemi</p>
+    </div>
 
-<div id="login" class="card hidden">
-<h2>Giriş</h2>
-<input id="loginName" placeholder="Ad">
-<input id="loginPin" type="password" placeholder="PIN">
-<button class="primary" onclick="login()">Giriş</button>
-</div>
+    <div id="homePage" class="card hidden">
+        <h2>Ana Sayfa</h2>
+        <p class="small">Kullanıcı girişi yapabilir veya yönetici panelinden kullanıcıları yönetebilirsin.</p>
 
-<div id="panel" class="card hidden">
-<h2 id="userInfo"></h2>
+        <div class="menu-grid">
+            <button class="btn-primary" onclick="showOnly('loginPage')">👤 Kullanıcı Girişi</button>
+            <button class="btn-blue" onclick="showOnly('adminLoginPage')">🛠️ Yönetici Girişi</button>
+        </div>
 
-<input id="count" placeholder="Dinleme adedi">
-<input id="avg" placeholder="Ortalama süre">
+        <button class="btn-light" onclick="showOnly('firstSetupPage')">⚙️ İlk Kurulum</button>
+    </div>
 
-<button class="primary" onclick="calc()">Hesapla</button>
+    <div id="firstSetupPage" class="card hidden">
+        <h2>İlk Kurulum - Yönetici Oluştur</h2>
 
-<div id="result"></div>
+        <label>Yönetici Adı</label>
+        <input id="adminSetupName" placeholder="Ad Soyad">
 
-<canvas id="chart" height="150"></canvas>
+        <label>Yönetici PIN</label>
+        <input id="adminSetupPin" type="password" placeholder="Örn: 1234">
 
-<button class="green" onclick="save()">Kaydet</button>
-<button onclick="exportJSON()">JSON İndir</button>
-<input type="file" onchange="importJSON(event)">
+        <button class="btn-primary" onclick="createAdmin()">Yöneticiyi Oluştur</button>
+        <button class="btn-light" onclick="showOnly('homePage')">Geri Dön</button>
 
-<button class="red" onclick="logout()">Çıkış</button>
-</div>
+        <p class="small">PIN bilgisi SHA-256 ile cihaz içinde hash olarak saklanır.</p>
+    </div>
 
+    <div id="adminLoginPage" class="card hidden">
+        <div class="login-icon">🛠️</div>
+        <h2>Yönetici Girişi</h2>
+
+        <label>Yönetici PIN</label>
+        <input id="adminLoginPin" type="password" placeholder="PIN">
+
+        <button class="btn-primary" onclick="adminLogin()">Giriş Yap</button>
+        <button class="btn-light" onclick="showOnly('homePage')">Ana Sayfa</button>
+    </div>
+
+    <div id="loginPage" class="card hidden">
+        <div class="login-icon">🎧</div>
+        <h2>Kullanıcı Girişi</h2>
+
+        <label>Kullanıcı</label>
+        <select id="loginUserSelect"></select>
+
+        <label>PIN Kodu</label>
+        <input id="loginPin" type="password" placeholder="PIN">
+
+        <button class="btn-primary" onclick="userLogin()">Giriş Yap</button>
+        <button class="btn-light" onclick="showOnly('homePage')">Ana Sayfa</button>
+    </div>
+
+    <div id="adminPage" class="hidden">
+
+        <div class="card">
+            <h2>Yönetici Paneli</h2>
+            <p class="small" id="adminInfo"></p>
+            <button class="btn-light" onclick="logout()">Çıkış Yap</button>
+        </div>
+
+        <div class="card">
+            <h2>Yeni Kullanıcı Ekle</h2>
+
+            <label>Uzman Adı</label>
+            <input id="newUserName" placeholder="Ad Soyad">
+
+            <label>Kullanıcı PIN</label>
+            <input id="newUserPin" type="password" placeholder="Örn: 1234">
+
+            <label>Hedef Verimlilik (%)</label>
+            <input id="newTarget" type="number" value="75">
+
+            <div class="row">
+                <div>
+                    <label>Mesai Başlangıç</label>
+                    <input id="newStart" type="time" value="08:30">
+                </div>
+                <div>
+                    <label>Mesai Bitiş</label>
+                    <input id="newEnd" type="time" value="18:45">
+                </div>
+            </div>
+
+            <label>Günlük Mola Süresi (dk)</label>
+            <input id="newBreak" type="number" value="75">
+
+            <label>Varsayılan Dinleme Süresi (dk)</label>
+            <input id="newDefaultTime" type="number" value="10">
+
+            <label>Dinleme Başı Ek Süre (dk)</label>
+            <input id="newExtraPerItem" type="number" value="2">
+
+            <label>Ek İşlem Katsayısı</label>
+            <input id="newExtraCoef" type="number" step="0.01" value="0.5">
+
+            <label>Toplantı / Coaching Katsayısı</label>
+            <input id="newMeetingCoef" type="number" step="0.01" value="0.7">
+
+            <button class="btn-green" onclick="addUser()">Kullanıcı Ekle</button>
+        </div>
+
+        <div class="card">
+            <h2>Kullanıcılar</h2>
+            <div id="adminUsersList"></div>
+        </div>
+
+        <div class="card">
+            <h2>Veri Yönetimi</h2>
+            <button class="btn-blue" onclick="backupJSON()">JSON Yedek İndir</button>
+
+            <label>JSON Yedek Yükle</label>
+            <input type="file" id="restoreFile" accept=".json" onchange="restoreJSON(event)">
+
+            <button class="btn-red" onclick="factoryReset()">Tüm Sistemi Sıfırla</button>
+        </div>
+
+    </div>
+
+    <div id="appPage" class="hidden">
+
+        <div class="card">
+            <h2>Operasyon Özeti</h2>
+            <div class="user-card">
+                <div class="user-box">👤 Uzman <b id="infoName"></b></div>
+                <div class="user-box">🎯 Hedef <b id="infoTarget"></b></div>
+                <div class="user-box">🕒 Mesai <b id="infoShift"></b></div>
+                <div class="user-box">✅ Net Çalışma <b id="infoNet"></b></div>
+            </div>
+
+            <div class="lock-box">
+                🔒 Bu kullanıcının temel ayarları kilitlidir. Değişiklik sadece yönetici panelinden yapılabilir.
+            </div>
+
+            <button class="btn-light" onclick="logout()">Çıkış Yap</button>
+        </div>
+
+        <div class="card">
+            <div class="tabs">
+                <button id="tabDaily" class="active" onclick="showTab('daily')">Günlük</button>
+                <button id="tabMonthly" onclick="showTab('monthly')">Aylık</button>
+                <button id="tabCharts" onclick="showTab('charts')">Grafik</button>
+                <button id="tabRecords" onclick="showTab('records')">Kayıtlar</button>
+            </div>
+        </div>
+
+        <div id="dailyPage" class="card">
+            <h2>Günlük Kalite Takibi</h2>
+
+            <div class="row">
+                <div>
+                    <label>Dinleme Adedi</label>
+                    <input id="dCount" type="number" placeholder="Örn: 42">
+                </div>
+                <div>
+                    <label>Ortalama Dinleme Süresi</label>
+                    <input id="dAvg" type="number" placeholder="dk">
+                </div>
+            </div>
+
+            <label>Ek İşlem Var mı?</label>
+            <select id="dExtraStatus" onchange="toggleDailyExtra()">
+                <option value="no">Hayır</option>
+                <option value="yes">Evet</option>
+            </select>
+
+            <div id="dailyExtra" class="hidden">
+                <div class="row">
+                    <div>
+                        <label>Ek İşlem Adedi</label>
+                        <input id="dExtraCount" type="number">
+                    </div>
+                    <div>
+                        <label>Ek İşlem Süresi</label>
+                        <input id="dExtraAvg" type="number">
+                    </div>
+                </div>
+            </div>
+
+            <label>Toplantı / Coaching Süresi</label>
+            <input id="dMeeting" type="number" placeholder="dk">
+
+            <label>Günlük Not</label>
+            <textarea id="dNote" placeholder="Örn: Kalibrasyon, eğitim, özel durum..."></textarea>
+
+            <button class="btn-primary" onclick="calculateDaily()">Günlük Hesapla</button>
+
+            <div id="dailyResult" class="hidden"></div>
+        </div>
+
+        <div id="monthlyPage" class="card hidden">
+            <h2>Aylık Performans Analizi</h2>
+
+            <label>Ay</label>
+            <input id="mMonth" type="month">
+
+            <label>Çalışılan Gün Sayısı</label>
+            <input id="mWorkDays" type="number" placeholder="Örn: 22">
+
+            <div class="row">
+                <div>
+                    <label>Toplam Dinleme</label>
+                    <input id="mCount" type="number">
+                </div>
+                <div>
+                    <label>Ortalama Dinleme Süresi</label>
+                    <input id="mAvg" type="number">
+                </div>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label>Ek İşlem Adedi</label>
+                    <input id="mExtraCount" type="number">
+                </div>
+                <div>
+                    <label>Ek İşlem Süresi</label>
+                    <input id="mExtraAvg" type="number">
+                </div>
+            </div>
+
+            <label>Toplam Toplantı / Coaching Süresi</label>
+            <input id="mMeeting" type="number" placeholder="dk">
+
+            <label>Aylık Not</label>
+            <textarea id="mNote" placeholder="Ay sonu değerlendirme notu..."></textarea>
+
+            <button class="btn-primary" onclick="calculateMonthly()">Aylık Hesapla</button>
+
+            <div id="monthlyResult" class="hidden"></div>
+        </div>
+
+        <div id="chartsPage" class="card hidden">
+            <h2>Performans Grafikleri</h2>
+
+            <h3>Son Kayıtlar - Verimlilik Grafiği</h3>
+            <canvas id="efficiencyChart" width="760" height="300"></canvas>
+
+            <h3>Son Kayıtlar - Üretim Grafiği</h3>
+            <canvas id="productionChart" width="760" height="300"></canvas>
+
+            <button class="btn-blue" onclick="drawCharts()">Grafikleri Yenile</button>
+        </div>
+
+        <div id="recordsPage" class="card hidden">
+            <h2>Kayıtlar</h2>
+            <button class="btn-blue" onclick="downloadExcel()">Excel İndir</button>
+            <button class="btn-orange" onclick="downloadUserJSON()">Kullanıcı Kayıtlarını JSON İndir</button>
+            <button class="btn-red" onclick="clearRecords()">Kayıtları Temizle</button>
+            <div id="recordsList"></div>
+        </div>
+
+    </div>
 </div>
 
 <script>
-let users = JSON.parse(localStorage.getItem("users")||"[]");
-let currentUser = null;
+const DB_KEY = "performance_panel_pro_database_v1";
+const SESSION_KEY = "performance_panel_pro_session_v1";
 
-function show(id){
-document.querySelectorAll(".card").forEach(x=>x.classList.add("hidden"));
-document.getElementById(id).classList.remove("hidden");
+let db = null;
+let activeUser = null;
+let activeRole = null;
+let lastReport = null;
+
+document.addEventListener("DOMContentLoaded", init);
+
+function defaultDb(){
+    return {
+        admin:null,
+        users:[],
+        createdAt:new Date().toISOString()
+    };
 }
 
-async function hash(text){
-const msgUint8 = new TextEncoder().encode(text);
-const hashBuffer = await crypto.subtle.digest('SHA-256', msgUint8);
-return Array.from(new Uint8Array(hashBuffer))
-.map(b => b.toString(16).padStart(2,'0')).join('');
+function loadDb(){
+    return JSON.parse(localStorage.getItem(DB_KEY) || "null") || defaultDb();
+}
+
+function saveDb(){
+    localStorage.setItem(DB_KEY, JSON.stringify(db));
+}
+
+function init(){
+    db = loadDb();
+
+    const session = JSON.parse(localStorage.getItem(SESSION_KEY) || "null");
+
+    if(session && session.role === "admin" && db.admin){
+        activeRole = "admin";
+        showOnly("adminPage");
+        loadAdmin();
+        return;
+    }
+
+    if(session && session.role === "user"){
+        const user = db.users.find(u => u.id === session.userId);
+        if(user){
+            activeRole = "user";
+            activeUser = user;
+            showOnly("appPage");
+            loadApp();
+            return;
+        }
+    }
+
+    if(!db.admin){
+        showOnly("firstSetupPage");
+    }else{
+        showOnly("homePage");
+        fillUserSelect();
+    }
+}
+
+function showOnly(id){
+    ["homePage","firstSetupPage","adminLoginPage","loginPage","adminPage","appPage"].forEach(page=>{
+        document.getElementById(page).classList.add("hidden");
+    });
+
+    document.getElementById(id).classList.remove("hidden");
+
+    if(id === "loginPage"){
+        fillUserSelect();
+    }
+
+    if(id === "adminPage"){
+        loadAdmin();
+    }
+}
+
+async function sha256(text){
+    const encoded = new TextEncoder().encode(text);
+    const hashBuffer = await crypto.subtle.digest("SHA-256", encoded);
+    return Array.from(new Uint8Array(hashBuffer))
+        .map(b => b.toString(16).padStart(2,"0"))
+        .join("");
 }
 
 async function createAdmin(){
-const name = adminName.value;
-const pin = await hash(adminPin.value);
+    const name = val("adminSetupName").trim();
+    const pin = val("adminSetupPin").trim();
 
-users.push({name,pin,records:[]});
-localStorage.setItem("users",JSON.stringify(users));
-alert("Admin oluşturuldu");
-show("home");
+    if(!name || !pin){
+        alert("Yönetici adı ve PIN zorunludur.");
+        return;
+    }
+
+    db.admin = {
+        name,
+        pinHash: await sha256(pin),
+        createdAt:new Date().toISOString()
+    };
+
+    saveDb();
+    alert("Yönetici oluşturuldu.");
+    showOnly("homePage");
 }
 
-async function login(){
-const name = loginName.value;
-const pin = await hash(loginPin.value);
+async function adminLogin(){
+    if(!db.admin){
+        alert("Önce ilk kurulumu yapmalısın.");
+        showOnly("firstSetupPage");
+        return;
+    }
 
-const user = users.find(u=>u.name===name && u.pin===pin);
+    const pin = val("adminLoginPin").trim();
+    const pinHash = await sha256(pin);
 
-if(!user){alert("Hatalı");return;}
+    if(pinHash !== db.admin.pinHash){
+        alert("Yönetici PIN hatalı.");
+        return;
+    }
 
-currentUser = user;
-userInfo.innerText = "Hoşgeldin " + user.name;
-show("panel");
-draw();
+    activeRole = "admin";
+    localStorage.setItem(SESSION_KEY, JSON.stringify({role:"admin"}));
+    showOnly("adminPage");
+    loadAdmin();
+}
+
+function fillUserSelect(){
+    const select = document.getElementById("loginUserSelect");
+    select.innerHTML = "";
+
+    if(db.users.length === 0){
+        const opt = document.createElement("option");
+        opt.value = "";
+        opt.textContent = "Kayıtlı kullanıcı yok";
+        select.appendChild(opt);
+        return;
+    }
+
+    db.users.forEach(user=>{
+        const opt = document.createElement("option");
+        opt.value = user.id;
+        opt.textContent = user.name;
+        select.appendChild(opt);
+    });
+}
+
+async function userLogin(){
+    const userId = val("loginUserSelect");
+    const pin = val("loginPin").trim();
+
+    if(!userId || !pin){
+        alert("Kullanıcı ve PIN seçmelisin.");
+        return;
+    }
+
+    const user = db.users.find(u => u.id === userId);
+    if(!user){
+        alert("Kullanıcı bulunamadı.");
+        return;
+    }
+
+    const pinHash = await sha256(pin);
+
+    if(pinHash !== user.pinHash){
+        alert("PIN hatalı.");
+        return;
+    }
+
+    activeRole = "user";
+    activeUser = user;
+    localStorage.setItem(SESSION_KEY, JSON.stringify({role:"user", userId:user.id}));
+
+    showOnly("appPage");
+    loadApp();
 }
 
 function logout(){
-currentUser=null;
-show("home");
+    localStorage.removeItem(SESSION_KEY);
+    activeUser = null;
+    activeRole = null;
+    lastReport = null;
+    location.reload();
 }
 
-function calc(){
-const count = Number(countInput.value || count.value);
-const avg = Number(avgInput.value || avg.value);
+function loadAdmin(){
+    if(!db.admin) return;
 
-const total = count * avg;
-const eff = total / 480 * 100;
+    document.getElementById("adminInfo").innerText =
+        `Yönetici: ${db.admin.name} | Toplam kullanıcı: ${db.users.length}`;
 
-result.innerHTML = `
-<b>Üretim:</b> ${total}<br>
-<b>Verim:</b> %${eff.toFixed(1)}
-`;
-
-return {total,eff};
+    renderAdminUsers();
 }
 
-function save(){
-const data = calc();
-currentUser.records.push({...data,date:new Date()});
-localStorage.setItem("users",JSON.stringify(users));
-draw();
-alert("Kaydedildi");
+async function addUser(){
+    const name = val("newUserName").trim();
+    const pin = val("newUserPin").trim();
+    const target = num("newTarget");
+    const start = val("newStart");
+    const end = val("newEnd");
+    const breakMinutes = num("newBreak");
+    const defaultTime = num("newDefaultTime");
+
+    if(!name || !pin || !target || !start || !end || !defaultTime){
+        alert("Zorunlu alanları doldur.");
+        return;
+    }
+
+    const totalMinutes = workMinutes(start,end);
+    const netMinutes = totalMinutes - breakMinutes;
+
+    if(totalMinutes <= 0){
+        alert("Mesai bitiş saati başlangıçtan büyük olmalı.");
+        return;
+    }
+
+    if(netMinutes <= 0){
+        alert("Mola süresi toplam mesaiden büyük olamaz.");
+        return;
+    }
+
+    const user = {
+        id:"u_" + Date.now(),
+        name,
+        pinHash: await sha256(pin),
+        settingsLocked:true,
+        settings:{
+            target,
+            start,
+            end,
+            totalMinutes,
+            breakMinutes,
+            netMinutes,
+            targetMinutes: netMinutes * target / 100,
+            defaultTime,
+            extraPerItem: num("newExtraPerItem"),
+            extraCoef: num("newExtraCoef") || 0.5,
+            meetingCoef: num("newMeetingCoef") || 0.7
+        },
+        records:[],
+        createdAt:new Date().toISOString()
+    };
+
+    db.users.push(user);
+    saveDb();
+
+    alert("Kullanıcı eklendi.");
+    clearNewUserForm();
+    renderAdminUsers();
+    fillUserSelect();
 }
 
-function draw(){
-const ctx = document.getElementById("chart").getContext("2d");
-ctx.clearRect(0,0,300,150);
-
-currentUser.records.forEach((r,i)=>{
-ctx.fillRect(i*20,150-r.eff,10,r.eff);
-});
+function clearNewUserForm(){
+    document.getElementById("newUserName").value = "";
+    document.getElementById("newUserPin").value = "";
+    document.getElementById("newTarget").value = 75;
+    document.getElementById("newStart").value = "08:30";
+    document.getElementById("newEnd").value = "18:45";
+    document.getElementById("newBreak").value = 75;
+    document.getElementById("newDefaultTime").value = 10;
+    document.getElementById("newExtraPerItem").value = 2;
+    document.getElementById("newExtraCoef").value = 0.5;
+    document.getElementById("newMeetingCoef").value = 0.7;
 }
 
-function exportJSON(){
-const blob = new Blob([JSON.stringify(users)],{type:"application/json"});
-const a = document.createElement("a");
-a.href = URL.createObjectURL(blob);
-a.download = "data.json";
-a.click();
+function renderAdminUsers(){
+    const area = document.getElementById("adminUsersList");
+
+    if(db.users.length === 0){
+        area.innerHTML = "<p class='small'>Henüz kullanıcı yok.</p>";
+        return;
+    }
+
+    area.innerHTML = "";
+
+    db.users.forEach(user=>{
+        const s = user.settings;
+        const div = document.createElement("div");
+        div.className = "record";
+        div.innerHTML = `
+            <span class="badge blue">Kullanıcı</span>
+            <br><br>
+            <b>${escapeHtml(user.name)}</b><br>
+            Hedef: <b>%${s.target}</b><br>
+            Mesai: <b>${s.start} - ${s.end}</b><br>
+            Net çalışma: <b>${s.netMinutes} dk</b><br>
+            Kayıt sayısı: <b>${user.records.length}</b><br>
+            Ayar durumu: <b>${user.settingsLocked ? "Kilitli" : "Açık"}</b>
+
+            <button class="btn-orange" onclick="toggleUserLock('${user.id}')">
+                ${user.settingsLocked ? "Ayar Kilidini Aç" : "Ayarı Kilitle"}
+            </button>
+
+            <button class="btn-blue" onclick="editUserPrompt('${user.id}')">
+                Ayarları Düzenle
+            </button>
+
+            <button class="btn-red" onclick="deleteUser('${user.id}')">
+                Kullanıcıyı Sil
+            </button>
+        `;
+
+        area.appendChild(div);
+    });
 }
 
-function importJSON(e){
-const file = e.target.files[0];
-const reader = new FileReader();
+function toggleUserLock(userId){
+    const user = db.users.find(u => u.id === userId);
+    if(!user) return;
 
-reader.onload = function(){
-users = JSON.parse(reader.result);
-localStorage.setItem("users",JSON.stringify(users));
-alert("Yüklendi");
-};
+    user.settingsLocked = !user.settingsLocked;
+    saveDb();
+    renderAdminUsers();
+}
 
-reader.readAsText(file);
+function editUserPrompt(userId){
+    const user = db.users.find(u => u.id === userId);
+    if(!user) return;
+
+    if(user.settingsLocked){
+        alert("Önce ayar kilidini açmalısın.");
+        return;
+    }
+
+    const s = user.settings;
+
+    const target = Number(prompt("Hedef verimlilik (%)", s.target));
+    const breakMinutes = Number(prompt("Mola süresi (dk)", s.breakMinutes));
+    const defaultTime = Number(prompt("Varsayılan dinleme süresi (dk)", s.defaultTime));
+    const extraPerItem = Number(prompt("Dinleme başı ek süre (dk)", s.extraPerItem));
+    const extraCoef = Number(prompt("Ek işlem katsayısı", s.extraCoef));
+    const meetingCoef = Number(prompt("Toplantı katsayısı", s.meetingCoef));
+
+    if(!target || !defaultTime){
+        alert("Geçersiz değer.");
+        return;
+    }
+
+    const netMinutes = s.totalMinutes - breakMinutes;
+
+    if(netMinutes <= 0){
+        alert("Mola süresi toplam mesaiden büyük olamaz.");
+        return;
+    }
+
+    user.settings = {
+        ...s,
+        target,
+        breakMinutes,
+        netMinutes,
+        targetMinutes: netMinutes * target / 100,
+        defaultTime,
+        extraPerItem,
+        extraCoef,
+        meetingCoef
+    };
+
+    user.settingsLocked = true;
+    saveDb();
+    renderAdminUsers();
+    alert("Ayarlar güncellendi ve tekrar kilitlendi.");
+}
+
+function deleteUser(userId){
+    if(!confirm("Bu kullanıcı ve tüm kayıtları silinsin mi?")) return;
+
+    db.users = db.users.filter(u => u.id !== userId);
+    saveDb();
+    renderAdminUsers();
+    fillUserSelect();
+}
+
+function loadApp(){
+    const s = activeUser.settings;
+
+    document.getElementById("infoName").innerText = activeUser.name;
+    document.getElementById("infoTarget").innerText =
+        `%${s.target} = ${s.targetMinutes.toFixed(0)} dk`;
+
+    document.getElementById("infoShift").innerText =
+        `${s.start} - ${s.end}`;
+
+    document.getElementById("infoNet").innerText =
+        `${s.netMinutes} dk`;
+
+    document.getElementById("dAvg").value = s.defaultTime;
+    document.getElementById("mAvg").value = s.defaultTime;
+
+    const now = new Date();
+    document.getElementById("mMonth").value =
+        now.getFullYear() + "-" + String(now.getMonth()+1).padStart(2,"0");
+}
+
+function showTab(tab){
+    ["daily","monthly","charts","records"].forEach(t=>{
+        document.getElementById(t+"Page").classList.add("hidden");
+        document.getElementById("tab"+cap(t)).classList.remove("active");
+    });
+
+    document.getElementById(tab+"Page").classList.remove("hidden");
+    document.getElementById("tab"+cap(tab)).classList.add("active");
+
+    if(tab === "records") renderRecords();
+    if(tab === "charts") drawCharts();
+}
+
+function toggleDailyExtra(){
+    document.getElementById("dailyExtra").classList.toggle(
+        "hidden",
+        val("dExtraStatus") !== "yes"
+    );
+}
+
+function calculateDaily(){
+    const s = activeUser.settings;
+
+    const count = num("dCount");
+    const avg = num("dAvg") || s.defaultTime;
+    const meeting = num("dMeeting");
+    const note = val("dNote");
+
+    const extraOn = val("dExtraStatus") === "yes";
+    const extraCount = extraOn ? num("dExtraCount") : 0;
+    const extraAvg = extraOn ? num("dExtraAvg") : 0;
+
+    const production = calcProduction(count,avg,extraCount,extraAvg,meeting);
+    const time = elapsedToday();
+
+    const efficiency = production.total / s.netMinutes * 100;
+    const targetPerformance = production.total / s.targetMinutes * 100;
+    const instant = production.total / time.netElapsed * 100;
+
+    const remainingTarget = Math.max(0, s.targetMinutes - production.total);
+    const idle = Math.max(0, time.netElapsed - production.total);
+
+    const currentSpeed = production.total / time.netElapsed;
+    const projectedProduction = currentSpeed * s.netMinutes;
+    const projectedEfficiency = projectedProduction / s.netMinutes * 100;
+
+    const requiredCount = Math.ceil(remainingTarget / (avg + s.extraPerItem));
+    const hourlyNeed = time.netRemaining > 0 ? remainingTarget / (time.netRemaining / 60) : 0;
+
+    const score = performanceScore(efficiency,targetPerformance,instant);
+    const status = getStatus(efficiency,targetPerformance);
+    const advice = dailyAdvice(efficiency,projectedEfficiency,remainingTarget,requiredCount,hourlyNeed);
+
+    lastReport = {
+        id:"r_" + Date.now(),
+        type:"Günlük",
+        date:new Date().toLocaleDateString("tr-TR"),
+        isoDate:new Date().toISOString(),
+        time:new Date().toLocaleTimeString("tr-TR"),
+        name:activeUser.name,
+        userId:activeUser.id,
+        workDays:"",
+        count,
+        avg,
+        extraCount,
+        extraAvg,
+        meeting,
+        totalProduction:production.total.toFixed(0),
+        efficiency:efficiency.toFixed(1),
+        instant:instant.toFixed(1),
+        targetPerformance:targetPerformance.toFixed(1),
+        projectedEfficiency:projectedEfficiency.toFixed(1),
+        idle:idle.toFixed(0),
+        remainingTarget:remainingTarget.toFixed(0),
+        requiredCount,
+        score,
+        status:status.text,
+        note
+    };
+
+    renderResult("dailyResult", lastReport, production, `
+        • Geçen net çalışma: <b>${time.netElapsed.toFixed(0)} dk</b><br>
+        • Kalan net çalışma: <b>${time.netRemaining.toFixed(0)} dk</b><br>
+        • Gün sonu tahmini verim: <b>%${projectedEfficiency.toFixed(1)}</b><br>
+        • Boş / kayıp süre: <b>${idle.toFixed(0)} dk</b><br>
+        • Saatlik gereken üretim: <b>${hourlyNeed.toFixed(1)} dk/saat</b><br><br>
+        ${advice}
+    `);
+}
+
+function calculateMonthly(){
+    const s = activeUser.settings;
+
+    const month = val("mMonth");
+    const workDays = num("mWorkDays");
+    const count = num("mCount");
+    const avg = num("mAvg") || s.defaultTime;
+    const extraCount = num("mExtraCount");
+    const extraAvg = num("mExtraAvg");
+    const meeting = num("mMeeting");
+    const note = val("mNote");
+
+    if(!workDays){
+        alert("Çalışılan gün sayısını gir.");
+        return;
+    }
+
+    const monthlyNet = s.netMinutes * workDays;
+    const monthlyTarget = s.targetMinutes * workDays;
+    const production = calcProduction(count,avg,extraCount,extraAvg,meeting);
+
+    const efficiency = production.total / monthlyNet * 100;
+    const targetPerformance = production.total / monthlyTarget * 100;
+    const remainingTarget = Math.max(0, monthlyTarget - production.total);
+    const extraTarget = Math.max(0, production.total - monthlyTarget);
+    const dailyAvgProduction = production.total / workDays;
+    const dailyAvgCount = count / workDays;
+    const requiredCount = Math.ceil(remainingTarget / (avg + s.extraPerItem));
+    const score = performanceScore(efficiency,targetPerformance,efficiency);
+    const status = getStatus(efficiency,targetPerformance);
+
+    lastReport = {
+        id:"r_" + Date.now(),
+        type:"Aylık",
+        date:month,
+        isoDate:new Date().toISOString(),
+        time:"-",
+        name:activeUser.name,
+        userId:activeUser.id,
+        workDays,
+        count,
+        avg,
+        extraCount,
+        extraAvg,
+        meeting,
+        totalProduction:production.total.toFixed(0),
+        efficiency:efficiency.toFixed(1),
+        instant:"-",
+        targetPerformance:targetPerformance.toFixed(1),
+        projectedEfficiency:"-",
+        idle:"-",
+        remainingTarget:remainingTarget.toFixed(0),
+        requiredCount,
+        score,
+        status:status.text,
+        note
+    };
+
+    renderResult("monthlyResult", lastReport, production, `
+        • Aylık net çalışma: <b>${monthlyNet.toFixed(0)} dk</b><br>
+        • Aylık hedef süre: <b>${monthlyTarget.toFixed(0)} dk</b><br>
+        • Günlük ortalama üretim: <b>${dailyAvgProduction.toFixed(1)} dk</b><br>
+        • Günlük ortalama dinleme: <b>${dailyAvgCount.toFixed(1)} adet</b><br>
+        • Hedef fazlası: <b>${extraTarget.toFixed(0)} dk</b><br>
+        • Eksik hedef: <b>${remainingTarget.toFixed(0)} dk</b>
+    `);
+}
+
+function renderResult(targetId, report, production, detailHtml){
+    const status = getStatus(Number(report.efficiency), Number(report.targetPerformance));
+    const progress = Math.min(100, Number(report.targetPerformance));
+
+    document.getElementById(targetId).innerHTML = `
+        <div class="result-card ${status.className}">
+            <div class="big-percent">%${report.efficiency}</div>
+            <div class="status">${status.icon} ${status.text}</div>
+            <div class="progress-wrap">
+                <div class="progress-bar" style="width:${progress}%"></div>
+            </div>
+            <div class="progress-text">Hedef gerçekleşme: %${report.targetPerformance}</div>
+        </div>
+
+        <div class="stats">
+            <div class="stat"><span>Üretim</span><b>${report.totalProduction} dk</b></div>
+            <div class="stat"><span>Eksik Hedef</span><b>${report.remainingTarget} dk</b></div>
+            <div class="stat"><span>Gereken Dinleme</span><b>${report.requiredCount}</b></div>
+            <div class="stat"><span>Skor</span><b>${report.score}/100</b></div>
+        </div>
+
+        <div class="advice">
+            • Normal dinleme katkısı: <b>${production.normal.toFixed(0)} dk</b><br>
+            • Ek işlem katkısı: <b>${production.extra.toFixed(0)} dk</b><br>
+            • Toplantı / coaching katkısı: <b>${production.meeting.toFixed(0)} dk</b><br>
+            ${detailHtml}
+        </div>
+
+        <button class="btn-green" onclick="saveRecord()">Kaydet</button>
+        <button class="btn-blue" onclick="copyReport()">📋 Raporu Kopyala</button>
+        <button class="btn-whatsapp" onclick="shareWhatsApp()">🟢 WhatsApp ile Paylaş</button>
+        <button class="btn-gmail" onclick="shareGmail()">✉️ Gmail ile Paylaş</button>
+    `;
+
+    document.getElementById(targetId).classList.remove("hidden");
+}
+
+function calcProduction(count,avg,extraCount,extraAvg,meeting){
+    const s = activeUser.settings;
+
+    const normal = count * (avg + s.extraPerItem);
+    const extra = extraCount * extraAvg * s.extraCoef;
+    const meetingProduction = meeting * s.meetingCoef;
+
+    return {
+        normal,
+        extra,
+        meeting:meetingProduction,
+        total:normal + extra + meetingProduction
+    };
+}
+
+function getStatus(efficiency,targetPerformance){
+    const s = activeUser.settings;
+
+    if(efficiency >= s.target){
+        return {text:"Hedef Üstü / Tamamlandı", className:"success", icon:"✅"};
+    }
+
+    if(targetPerformance >= 80){
+        return {text:"Riskli Bölge", className:"warning", icon:"⚠️"};
+    }
+
+    return {text:"Kritik Seviye", className:"danger", icon:"⛔"};
+}
+
+function dailyAdvice(efficiency,projected,remaining,requiredCount,hourlyNeed){
+    const s = activeUser.settings;
+
+    if(efficiency >= s.target){
+        return "✅ Günlük kalite hedefi tamamlandı. Performans güvenli bölgede.";
+    }
+
+    if(projected >= s.target){
+        return "✅ Mevcut tempo korunursa gün sonunda hedef yakalanabilir.";
+    }
+
+    return `⚠️ Hedef için yaklaşık <b>${requiredCount}</b> dinleme daha gerekiyor. Eksik süre: <b>${remaining.toFixed(0)} dk</b>. Saatlik yaklaşık <b>${hourlyNeed.toFixed(1)} dk</b> üretim gerekli.`;
+}
+
+function performanceScore(efficiency,targetPerformance,instant){
+    const s = activeUser.settings;
+
+    let score = 0;
+    score += Math.min(50, efficiency / s.target * 50);
+    score += Math.min(35, targetPerformance / 100 * 35);
+    score += Math.min(15, instant / s.target * 15);
+
+    return Math.round(Math.min(100, score));
+}
+
+function elapsedToday(){
+    const s = activeUser.settings;
+    const now = new Date();
+
+    const [sh,sm] = s.start.split(":").map(Number);
+    const [eh,em] = s.end.split(":").map(Number);
+
+    const start = new Date();
+    start.setHours(sh,sm,0,0);
+
+    const end = new Date();
+    end.setHours(eh,em,0,0);
+
+    let elapsedTotal = Math.floor((now - start) / 60000);
+    elapsedTotal = Math.max(1, Math.min(elapsedTotal, s.totalMinutes));
+
+    const breakRatio = s.breakMinutes / s.totalMinutes;
+    const netElapsed = Math.max(1, elapsedTotal - (elapsedTotal * breakRatio));
+    const netRemaining = Math.max(0, s.netMinutes - netElapsed);
+
+    return {
+        elapsedTotal,
+        netElapsed,
+        netRemaining
+    };
+}
+
+function saveRecord(){
+    if(!lastReport){
+        alert("Önce hesaplama yap.");
+        return;
+    }
+
+    const user = db.users.find(u => u.id === activeUser.id);
+    if(!user){
+        alert("Kullanıcı bulunamadı.");
+        return;
+    }
+
+    user.records.push(lastReport);
+    activeUser = user;
+    saveDb();
+
+    alert("Kayıt oluşturuldu.");
+    drawCharts();
+}
+
+function getRecords(){
+    if(!activeUser) return [];
+    const user = db.users.find(u => u.id === activeUser.id);
+    return user ? user.records : [];
+}
+
+function renderRecords(){
+    const records = getRecords();
+    const list = document.getElementById("recordsList");
+
+    if(records.length === 0){
+        list.innerHTML = "<p class='small'>Henüz kayıt yok.</p>";
+        return;
+    }
+
+    list.innerHTML = "";
+
+    records.slice().reverse().forEach(r=>{
+        const badgeClass =
+            r.status.includes("Tamamlandı") ? "green" :
+            r.status.includes("Riskli") ? "orange" : "red";
+
+        const div = document.createElement("div");
+        div.className = "record";
+        div.innerHTML = `
+            <span class="badge ${badgeClass}">${r.type}</span><br><br>
+            <b>${r.date} ${r.time}</b><br>
+            Uzman: ${escapeHtml(r.name)}<br>
+            Verimlilik: <b>%${r.efficiency}</b><br>
+            Üretim: <b>${r.totalProduction} dk</b><br>
+            Hedef Gerçekleşme: <b>%${r.targetPerformance}</b><br>
+            Durum: <b>${r.status}</b><br>
+            Skor: <b>${r.score}/100</b><br>
+            Not: ${escapeHtml(r.note || "")}
+        `;
+        list.appendChild(div);
+    });
+}
+
+function downloadExcel(){
+    const records = getRecords();
+
+    if(records.length === 0){
+        alert("İndirilecek kayıt yok.");
+        return;
+    }
+
+    let table = `
+    <table border="1">
+        <tr>
+            <th>Tür</th><th>Tarih</th><th>Saat</th><th>Uzman</th>
+            <th>Çalışılan Gün</th><th>Dinleme</th><th>Ort. Süre</th>
+            <th>Ek İşlem</th><th>Ek Süre</th><th>Toplantı</th>
+            <th>Üretim</th><th>Verim</th><th>Hedef Gerçekleşme</th>
+            <th>Eksik</th><th>Gereken Dinleme</th><th>Skor</th><th>Durum</th><th>Not</th>
+        </tr>`;
+
+    records.forEach(r=>{
+        table += `
+        <tr>
+            <td>${safeCell(r.type)}</td>
+            <td>${safeCell(r.date)}</td>
+            <td>${safeCell(r.time)}</td>
+            <td>${safeCell(r.name)}</td>
+            <td>${safeCell(r.workDays || "")}</td>
+            <td>${safeCell(r.count)}</td>
+            <td>${safeCell(r.avg)}</td>
+            <td>${safeCell(r.extraCount)}</td>
+            <td>${safeCell(r.extraAvg)}</td>
+            <td>${safeCell(r.meeting)}</td>
+            <td>${safeCell(r.totalProduction)}</td>
+            <td>%${safeCell(r.efficiency)}</td>
+            <td>%${safeCell(r.targetPerformance)}</td>
+            <td>${safeCell(r.remainingTarget)}</td>
+            <td>${safeCell(r.requiredCount)}</td>
+            <td>${safeCell(r.score)}</td>
+            <td>${safeCell(r.status)}</td>
+            <td>${safeCell(r.note || "")}</td>
+        </tr>`;
+    });
+
+    table += "</table>";
+
+    downloadBlob(
+        "\ufeff" + table,
+        "kalite_performans_raporu.xls",
+        "application/vnd.ms-excel"
+    );
+}
+
+function reportText(){
+    if(!lastReport) return "";
+
+    return `🎧 ${lastReport.type} Kalite Performans Raporu
+
+Uzman: ${lastReport.name}
+Tarih: ${lastReport.date}
+Verimlilik: %${lastReport.efficiency}
+Hedef Gerçekleşme: %${lastReport.targetPerformance}
+Toplam Üretim: ${lastReport.totalProduction} dk
+Eksik Hedef: ${lastReport.remainingTarget} dk
+Gereken Dinleme: ${lastReport.requiredCount}
+Skor: ${lastReport.score}/100
+Durum: ${lastReport.status}`;
+}
+
+async function copyReport(){
+    if(!lastReport){
+        alert("Önce hesaplama yap.");
+        return;
+    }
+
+    await navigator.clipboard.writeText(reportText());
+    alert("Rapor kopyalandı.");
+}
+
+function shareWhatsApp(){
+    if(!lastReport){
+        alert("Önce hesaplama yap.");
+        return;
+    }
+
+    const text = encodeURIComponent(reportText());
+    window.open(`https://wa.me/?text=${text}`, "_blank");
+}
+
+function shareGmail(){
+    if(!lastReport){
+        alert("Önce hesaplama yap.");
+        return;
+    }
+
+    const subject = encodeURIComponent("Kalite Performans Raporu");
+    const body = encodeURIComponent(reportText());
+
+    window.open(
+        `https://mail.google.com/mail/?view=cm&fs=1&su=${subject}&body=${body}`,
+        "_blank"
+    );
+}
+
+function clearRecords(){
+    if(!confirm("Bu kullanıcının tüm kayıtları silinsin mi?")) return;
+
+    const user = db.users.find(u => u.id === activeUser.id);
+    if(!user) return;
+
+    user.records = [];
+    activeUser = user;
+    saveDb();
+    renderRecords();
+    drawCharts();
+}
+
+function drawCharts(){
+    const records = getRecords().slice(-12);
+    drawBarChart("efficiencyChart", records, "efficiency", "Verimlilik %", activeUser.settings.target);
+    drawBarChart("productionChart", records, "totalProduction", "Üretim dk", activeUser.settings.targetMinutes);
+}
+
+function drawBarChart(canvasId, records, key, label, targetLine){
+    const canvas = document.getElementById(canvasId);
+    if(!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    const width = canvas.width;
+    const height = canvas.height;
+
+    ctx.clearRect(0,0,width,height);
+
+    ctx.fillStyle = "#f8fafc";
+    ctx.fillRect(0,0,width,height);
+
+    ctx.strokeStyle = "#e2e8f0";
+    ctx.lineWidth = 1;
+
+    for(let i=0;i<=5;i++){
+        const y = 30 + i * ((height-70)/5);
+        ctx.beginPath();
+        ctx.moveTo(45,y);
+        ctx.lineTo(width-20,y);
+        ctx.stroke();
+    }
+
+    ctx.fillStyle = "#0f172a";
+    ctx.font = "14px Arial";
+    ctx.fillText(label, 20, 20);
+
+    if(records.length === 0){
+        ctx.fillStyle = "#64748b";
+        ctx.fillText("Henüz grafik için kayıt yok.", 220, 150);
+        return;
+    }
+
+    const values = records.map(r => Number(r[key]) || 0);
+    const maxValue = Math.max(...values, Number(targetLine) || 0, 100);
+    const chartHeight = height - 80;
+    const chartWidth = width - 80;
+    const barGap = 8;
+    const barWidth = Math.max(14, (chartWidth / records.length) - barGap);
+
+    const targetY = 30 + chartHeight - ((targetLine / maxValue) * chartHeight);
+    ctx.strokeStyle = "#dc2626";
+    ctx.setLineDash([6,4]);
+    ctx.beginPath();
+    ctx.moveTo(45,targetY);
+    ctx.lineTo(width-20,targetY);
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    ctx.fillStyle = "#dc2626";
+    ctx.font = "12px Arial";
+    ctx.fillText("Hedef", width-70, targetY-6);
+
+    records.forEach((r,i)=>{
+        const value = Number(r[key]) || 0;
+        const barHeight = (value / maxValue) * chartHeight;
+        const x = 55 + i * (barWidth + barGap);
+        const y = 30 + chartHeight - barHeight;
+
+        ctx.fillStyle = "#2563eb";
+        ctx.fillRect(x,y,barWidth,barHeight);
+
+        ctx.fillStyle = "#0f172a";
+        ctx.font = "11px Arial";
+        ctx.fillText(String(Math.round(value)), x, y-5);
+
+        ctx.save();
+        ctx.translate(x+barWidth/2, height-22);
+        ctx.rotate(-Math.PI/5);
+        ctx.fillStyle = "#64748b";
+        ctx.fillText(r.type === "Aylık" ? "Ay" : r.date.slice(0,5), 0, 0);
+        ctx.restore();
+    });
+}
+
+function backupJSON(){
+    downloadBlob(
+        JSON.stringify(db,null,2),
+        "performans_paneli_yedek.json",
+        "application/json"
+    );
+}
+
+function restoreJSON(event){
+    const file = event.target.files[0];
+    if(!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = function(){
+        try{
+            const incoming = JSON.parse(reader.result);
+
+            if(!incoming || !Array.isArray(incoming.users)){
+                alert("Geçersiz yedek dosyası.");
+                return;
+            }
+
+            db = incoming;
+            saveDb();
+            alert("Yedek başarıyla yüklendi.");
+            location.reload();
+        }catch(e){
+            alert("JSON okunamadı.");
+        }
+    };
+
+    reader.readAsText(file);
+}
+
+function downloadUserJSON(){
+    const records = getRecords();
+
+    if(records.length === 0){
+        alert("İndirilecek kayıt yok.");
+        return;
+    }
+
+    downloadBlob(
+        JSON.stringify(records,null,2),
+        `${activeUser.name.replaceAll(" ","_")}_kayitlar.json`,
+        "application/json"
+    );
+}
+
+function factoryReset(){
+    if(!confirm("Tüm kullanıcılar, yönetici ve kayıtlar silinsin mi?")) return;
+    if(!confirm("Bu işlem geri alınamaz. Emin misin?")) return;
+
+    localStorage.removeItem(DB_KEY);
+    localStorage.removeItem(SESSION_KEY);
+    location.reload();
+}
+
+function downloadBlob(content, filename, type){
+    const blob = new Blob([content], {type});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = filename;
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+function workMinutes(start,end){
+    const [sh,sm] = start.split(":").map(Number);
+    const [eh,em] = end.split(":").map(Number);
+    return (eh*60+em) - (sh*60+sm);
+}
+
+function val(id){
+    return document.getElementById(id).value;
+}
+
+function num(id){
+    return Number(document.getElementById(id).value) || 0;
+}
+
+function cap(s){
+    return s.charAt(0).toUpperCase() + s.slice(1);
+}
+
+function escapeHtml(text){
+    return String(text)
+        .replaceAll("&","&amp;")
+        .replaceAll("<","&lt;")
+        .replaceAll(">","&gt;")
+        .replaceAll('"',"&quot;")
+        .replaceAll("'","&#039;");
+}
+
+function safeCell(text){
+    return escapeHtml(text);
 }
 </script>
 

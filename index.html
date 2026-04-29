@@ -3,361 +3,646 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Verimlilik Takibi - Kesin Hesap</title>
+<title>Verimlilik Takip Programı</title>
 
 <style>
 :root {
-    --primary: #cc0000;
+    --primary: #c0392b;
     --secondary: #2c3e50;
+    --success: #27ae60;
+    --warning: #f39c12;
+    --danger: #c0392b;
+    --blue: #2980b9;
     --bg: #f4f7f6;
-    --card-bg: #ffffff;
+    --card: #ffffff;
 }
 
-body {
-    font-family: 'Segoe UI', sans-serif;
-    background: var(--bg);
-    padding: 15px;
-    display: flex;
-    justify-content: center;
-}
-
-.card {
-    background: var(--card-bg);
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
-    width: 100%;
-    max-width: 460px;
-}
-
-.info-header {
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 13px;
-    background: #eef2f3;
-    padding: 10px;
-    border-radius: 10px;
-    border: 1px solid #ddd;
-}
-
-label {
-    font-size: 11px;
-    font-weight: bold;
-    color: var(--primary);
-    display: block;
-    margin-top: 12px;
-    margin-bottom: 4px;
-    text-transform: uppercase;
-}
-
-input, select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    background: #fafafa;
-    font-size: 14px;
+* {
     box-sizing: border-box;
 }
 
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: var(--bg);
+    padding: 15px;
+    color: #222;
+}
+
+.container {
+    width: 100%;
+    max-width: 520px;
+    margin: auto;
+}
+
+.card {
+    background: var(--card);
+    padding: 20px;
+    border-radius: 16px;
+    box-shadow: 0 6px 25px rgba(0,0,0,0.10);
+}
+
+h1 {
+    margin-top: 0;
+    text-align: center;
+    color: var(--secondary);
+    font-size: 22px;
+}
+
+h2 {
+    font-size: 16px;
+    margin-top: 0;
+    color: var(--secondary);
+}
+
+label {
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 5px;
+    font-size: 12px;
+    font-weight: bold;
+    color: var(--primary);
+    text-transform: uppercase;
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ddd;
+    border-radius: 9px;
+    font-size: 14px;
+    background: #fafafa;
+}
+
+textarea {
+    min-height: 70px;
+    resize: vertical;
+}
+
 .row {
-    display: flex;
-    gap: 8px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 13px;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 12px;
+    font-size: 14px;
 }
 
 .btn-main {
-    width: 100%;
-    padding: 14px;
     background: var(--secondary);
     color: white;
-    border: none;
-    border-radius: 10px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 15px;
 }
 
-.res-badge {
-    margin-top: 15px;
-    padding: 15px;
+.btn-green {
+    background: var(--success);
+    color: white;
+}
+
+.btn-blue {
+    background: var(--blue);
+    color: white;
+}
+
+.btn-red {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-light {
+    background: #ecf0f1;
+    color: #222;
+}
+
+.hidden {
+    display: none;
+}
+
+.info-box {
+    background: #eef2f3;
+    padding: 12px;
     border-radius: 10px;
     text-align: center;
+    font-size: 13px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+}
+
+.result {
+    margin-top: 15px;
+    padding: 16px;
+    border-radius: 12px;
+    color: white;
+    text-align: center;
+    font-size: 22px;
     font-weight: bold;
-    font-size: 20px;
-    display: none;
 }
 
 .success {
-    background: #27ae60;
-    color: white;
+    background: var(--success);
+}
+
+.warning {
+    background: var(--warning);
 }
 
 .danger {
-    background: #c0392b;
-    color: white;
+    background: var(--danger);
 }
 
-.stats-grid {
-    display: none;
+.grid {
+    display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-top: 12px;
-}
-
-.stat-item {
-    padding: 12px;
-    border-radius: 8px;
-    text-align: center;
-    font-size: 12px;
-    font-weight: bold;
-    color: white;
-}
-
-.analysis-box {
-    margin-top: 12px;
-    padding: 12px;
-    border-radius: 8px;
-    background: #fffde7;
-    border-left: 5px solid #fbc02d;
-    font-size: 13px;
-    line-height: 1.5;
-    display: none;
-}
-
-.btn-group {
-    display: none;
     gap: 10px;
+    margin-top: 12px;
+}
+
+.stat {
+    color: white;
+    padding: 13px;
+    border-radius: 10px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.analysis {
+    margin-top: 12px;
+    padding: 13px;
+    border-left: 5px solid #f1c40f;
+    background: #fffde7;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+.history-item {
+    background: #f8f8f8;
+    border: 1px solid #ddd;
+    padding: 10px;
+    border-radius: 9px;
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+.small {
+    font-size: 12px;
+    color: #666;
+    text-align: center;
     margin-top: 10px;
-}
-
-.btn-excel {
-    background: #1f7244;
-    color: white;
-    flex: 1;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-.btn-share {
-    background: #3498db;
-    color: white;
-    flex: 1;
-    padding: 10px;
-    border-radius: 8px;
-    border: none;
-    font-weight: bold;
-    cursor: pointer;
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<div class="container">
 
-    <div class="info-header">
-        🕒 Mesai: <b>08:30 - 18:45</b> | Toplam: <b>615 dk</b><br>
-        🎯 Hedef Verimlilik: <b>%65</b> | Hedef Süre: <b>355 dk</b>
+    <div id="setupPage" class="card hidden">
+        <h1>İlk Kurulum</h1>
+
+        <label>Personel Adı</label>
+        <input type="text" id="setupName" placeholder="Örn: Ahmet Yılmaz">
+
+        <label>Hedef Verimlilik (%)</label>
+        <input type="number" id="setupTargetPercent" placeholder="Örn: 65">
+
+        <div class="row">
+            <div>
+                <label>Mesai Başlangıç</label>
+                <input type="time" id="setupStartTime" value="08:30">
+            </div>
+            <div>
+                <label>Mesai Bitiş</label>
+                <input type="time" id="setupEndTime" value="18:45">
+            </div>
+        </div>
+
+        <label>Varsayılan İşlem Süresi (dk)</label>
+        <input type="number" id="setupDefaultProcessTime" placeholder="Örn: 10">
+
+        <label>İşlem Başı Ek Süre (dk)</label>
+        <input type="number" id="setupExtraPerProcess" value="2">
+
+        <label>Ek İşlem Katsayısı</label>
+        <input type="number" step="0.01" id="setupExtraCoefficient" value="0.5">
+
+        <label>Toplantı / Eğitim Katsayısı</label>
+        <input type="number" step="0.01" id="setupMeetingCoefficient" value="0.7">
+
+        <button class="btn-main" onclick="saveSettings()">Ayarları Kaydet</button>
+
+        <p class="small">Bu bilgiler tarayıcıda kayıtlı kalır.</p>
     </div>
 
-    <label>Personel</label>
-    <select id="personelSelect"></select>
+    <div id="appPage" class="card hidden">
+        <h1>Verimlilik Takibi</h1>
 
-    <label>Normal Dinleme / İşlem</label>
-    <div class="row">
-        <input type="number" id="adet" placeholder="Adet">
-        <input type="number" id="sure" placeholder="Ort. Süre">
-    </div>
+        <div class="info-box" id="userInfo"></div>
 
-    <label>Ek İşlem / 0.5 Katsayı</label>
-    <div class="row">
-        <input type="number" id="ekAdet" placeholder="Adet">
-        <input type="number" id="ekSure" placeholder="Ort. Süre">
-    </div>
+        <h2>Günlük Bilgiler</h2>
 
-    <label>Toplantı / Eğitim Dakikası</label>
-    <input type="number" id="toplanti" placeholder="Toplam dk">
+        <div class="row">
+            <div>
+                <label>Dinleme Adedi</label>
+                <input type="number" id="dailyCount" placeholder="Adet">
+            </div>
+            <div>
+                <label>Ortalama Süre</label>
+                <input type="number" id="dailyAvgTime" placeholder="dk">
+            </div>
+        </div>
 
-    <button class="btn-main" onclick="hesapla()">ANLIK DURUMU ANALİZ ET</button>
+        <label>Ek İşlem Var mı?</label>
+        <select id="extraEnabled" onchange="toggleExtraFields()">
+            <option value="no">Hayır</option>
+            <option value="yes">Evet</option>
+        </select>
 
-    <div id="verimSonuc" class="res-badge"></div>
+        <div id="extraFields" class="hidden">
+            <div class="row">
+                <div>
+                    <label>Ek İşlem Adedi</label>
+                    <input type="number" id="extraCount" placeholder="Adet">
+                </div>
+                <div>
+                    <label>Ek İşlem Süresi</label>
+                    <input type="number" id="extraAvgTime" placeholder="dk">
+                </div>
+            </div>
+        </div>
 
-    <div id="istatistikler" class="stats-grid">
-        <div class="stat-item" style="background:#2980b9;" id="uretimDk">0 dk Üretim</div>
-        <div class="stat-item" style="background:#e67e22;" id="molaDk">0 dk Boş/Mola</div>
-        <div class="stat-item" style="background:#8e44ad;" id="hedefDurum">0 dk Hedef</div>
-        <div class="stat-item" style="background:#16a085;" id="anlikVerim">0% Anlık</div>
-    </div>
+        <label>Toplantı / Eğitim Süresi</label>
+        <input type="number" id="meetingTime" placeholder="dk">
 
-    <div id="analizDetay" class="analysis-box"></div>
+        <label>Günlük Not</label>
+        <textarea id="dailyNote" placeholder="İsteğe bağlı not"></textarea>
 
-    <div class="btn-group" id="footerButtons">
-        <button class="btn-excel" onclick="excelIndir()">📊 EXCEL İNDİR</button>
-        <button class="btn-share" onclick="paylas()">📤 PAYLAŞ</button>
+        <button class="btn-main" onclick="calculate()">Hesapla</button>
+
+        <div id="resultArea" class="hidden">
+            <div id="mainResult" class="result"></div>
+
+            <div class="grid">
+                <div class="stat" style="background:#2980b9;" id="productionStat"></div>
+                <div class="stat" style="background:#e67e22;" id="idleStat"></div>
+                <div class="stat" style="background:#8e44ad;" id="targetStat"></div>
+                <div class="stat" style="background:#16a085;" id="instantStat"></div>
+            </div>
+
+            <div class="analysis" id="analysisBox"></div>
+
+            <button class="btn-green" onclick="saveDailyRecord()">Günü Kaydet</button>
+            <button class="btn-blue" onclick="downloadExcel()">Excel İndir</button>
+            <button class="btn-light" onclick="shareReport()">Raporu Paylaş / Kopyala</button>
+        </div>
+
+        <button class="btn-light" onclick="showHistory()">Geçmiş Kayıtları Göster</button>
+        <button class="btn-red" onclick="resetSettings()">Ayarları Sıfırla</button>
+
+        <div id="historyArea" class="hidden">
+            <h2>Geçmiş Kayıtlar</h2>
+            <div id="historyList"></div>
+        </div>
     </div>
 
 </div>
 
 <script>
-const isimler = [
-    "DOGA SUMEYYE SAFAK",
-    "OZLEM BASCAVUSOGULLARI",
-    "FATIH KARADENIZ",
-    "HALIDE PALAVAR",
-    "FATIH BASTUG",
-    "HABIBE KARABIYIK",
-    "GOKSU DANACI",
-    "RUKIYE DEMIRKALE",
-    "YALIN BASBUG",
-    "MUNEVVER YILMAZ",
-    "BERFIN SULTAN DAGLI"
-];
+const SETTINGS_KEY = "verimlilik_ayarlar";
+const RECORDS_KEY = "verimlilik_kayitlar";
 
-const sel = document.getElementById("personelSelect");
+let settings = null;
+let lastReport = null;
 
-isimler.forEach(isim => {
-    const opt = document.createElement("option");
-    opt.value = isim;
-    opt.textContent = isim;
-    sel.appendChild(opt);
-});
+document.addEventListener("DOMContentLoaded", init);
 
-let sonRapor = null;
+function init() {
+    settings = getSettings();
 
-function hesapla() {
-    const simdi = new Date();
-
-    const baslangic = new Date();
-    baslangic.setHours(8, 30, 0, 0);
-
-    const bitis = new Date();
-    bitis.setHours(18, 45, 0, 0);
-
-    const toplamMesaiDk = 615;
-    const hedefVerimYuzde = 65;
-    const hedefDk = 355;
-
-    let gecenDk = Math.floor((simdi - baslangic) / 60000);
-    gecenDk = Math.max(1, Math.min(gecenDk, toplamMesaiDk));
-
-    let kalanDk = Math.floor((bitis - simdi) / 60000);
-    kalanDk = Math.max(0, kalanDk);
-
-    const normalAdet = Number(document.getElementById("adet").value) || 0;
-    const normalSure = Number(document.getElementById("sure").value) || 0;
-    const ekAdet = Number(document.getElementById("ekAdet").value) || 0;
-    const ekSure = Number(document.getElementById("ekSure").value) || 0;
-    const toplantiDk = Number(document.getElementById("toplanti").value) || 0;
-
-    const islemBasiEkSure = 2;
-    const toplantıKatsayi = 0.70;
-    const ekIslemKatsayi = 0.50;
-
-    const normalUretim = normalAdet * (normalSure + islemBasiEkSure);
-    const ekUretim = ekAdet * ekSure * ekIslemKatsayi;
-    const toplantiUretim = toplantiDk * toplantıKatsayi;
-
-    const toplamUretim = normalUretim + ekUretim + toplantiUretim;
-
-    const hedefeGorePerformans = (toplamUretim / hedefDk) * 100;
-    const genelVerimlilik = (toplamUretim / toplamMesaiDk) * 100;
-    const anlikVerimlilik = (toplamUretim / gecenDk) * 100;
-
-    const bosMolaDk = Math.max(0, gecenDk - toplamUretim);
-    const kalanHedefDk = Math.max(0, hedefDk - toplamUretim);
-
-    const ortNormalIslemDk = normalSure > 0 ? normalSure + islemBasiEkSure : 10;
-    const gerekenAdet = Math.ceil(kalanHedefDk / ortNormalIslemDk);
-
-    const vBadge = document.getElementById("verimSonuc");
-    vBadge.style.display = "block";
-
-    vBadge.innerText = `%${genelVerimlilik.toFixed(1)} GENEL VERİMLİLİK`;
-    vBadge.className = genelVerimlilik >= hedefVerimYuzde
-        ? "res-badge success"
-        : "res-badge danger";
-
-    document.getElementById("istatistikler").style.display = "grid";
-    document.getElementById("footerButtons").style.display = "flex";
-
-    document.getElementById("uretimDk").innerText =
-        `${toplamUretim.toFixed(0)} dk Üretim`;
-
-    document.getElementById("molaDk").innerText =
-        `${bosMolaDk.toFixed(0)} dk Boş/Mola`;
-
-    document.getElementById("hedefDurum").innerText =
-        `${kalanHedefDk.toFixed(0)} dk Kalan Hedef`;
-
-    document.getElementById("anlikVerim").innerText =
-        `%${anlikVerimlilik.toFixed(1)} Anlık`;
-
-    const analiz = document.getElementById("analizDetay");
-    analiz.style.display = "block";
-
-    let durumMesaji = "";
-
-    if (kalanHedefDk <= 0) {
-        durumMesaji = "✅ Hedef tamamlandı. Bugünkü minimum hedefin üstündesin.";
-    } else if (kalanDk <= 0) {
-        durumMesaji = "⛔ Mesai bitti. Hedef tamamlanmadı.";
+    if (!settings) {
+        document.getElementById("setupPage").classList.remove("hidden");
     } else {
-        durumMesaji = `⚠️ Hedef için yaklaşık <b>${gerekenAdet}</b> normal işlem daha gerekli.`;
+        document.getElementById("appPage").classList.remove("hidden");
+        loadApp();
     }
-
-    analiz.innerHTML = `
-        • Mesai başlangıcından beri geçen süre: <b>${gecenDk} dk</b><br>
-        • Mesai bitimine kalan süre: <b>${kalanDk} dk</b><br>
-        • Normal üretim: <b>${normalUretim.toFixed(0)} dk</b><br>
-        • Ek işlem üretimi: <b>${ekUretim.toFixed(0)} dk</b><br>
-        • Toplantı/eğitim katkısı: <b>${toplantiUretim.toFixed(0)} dk</b><br>
-        • Hedefe göre performans: <b>%${hedefeGorePerformans.toFixed(1)}</b><br><br>
-        ${durumMesaji}
-    `;
-
-    sonRapor = {
-        personel: document.getElementById("personelSelect").value,
-        genelVerimlilik: genelVerimlilik.toFixed(1),
-        anlikVerimlilik: anlikVerimlilik.toFixed(1),
-        toplamUretim: toplamUretim.toFixed(0),
-        bosMolaDk: bosMolaDk.toFixed(0),
-        kalanHedefDk: kalanHedefDk.toFixed(0),
-        gerekenAdet: gerekenAdet,
-        kalanDk: kalanDk
-    };
 }
 
-function excelIndir() {
-    if (!sonRapor) {
-        alert("Önce analiz yapmalısın.");
+function getSettings() {
+    const data = localStorage.getItem(SETTINGS_KEY);
+    return data ? JSON.parse(data) : null;
+}
+
+function saveSettings() {
+    const name = document.getElementById("setupName").value.trim();
+    const targetPercent = Number(document.getElementById("setupTargetPercent").value);
+    const startTime = document.getElementById("setupStartTime").value;
+    const endTime = document.getElementById("setupEndTime").value;
+    const defaultProcessTime = Number(document.getElementById("setupDefaultProcessTime").value);
+    const extraPerProcess = Number(document.getElementById("setupExtraPerProcess").value);
+    const extraCoefficient = Number(document.getElementById("setupExtraCoefficient").value);
+    const meetingCoefficient = Number(document.getElementById("setupMeetingCoefficient").value);
+
+    if (!name || !targetPercent || !startTime || !endTime || !defaultProcessTime) {
+        alert("Lütfen zorunlu alanları doldur.");
         return;
     }
 
-    const table = `
+    const totalWorkMinutes = calculateWorkMinutes(startTime, endTime);
+
+    if (totalWorkMinutes <= 0) {
+        alert("Mesai bitiş saati başlangıçtan büyük olmalı.");
+        return;
+    }
+
+    const targetMinutes = totalWorkMinutes * (targetPercent / 100);
+
+    settings = {
+        name,
+        targetPercent,
+        startTime,
+        endTime,
+        totalWorkMinutes,
+        targetMinutes,
+        defaultProcessTime,
+        extraPerProcess: extraPerProcess || 0,
+        extraCoefficient: extraCoefficient || 0.5,
+        meetingCoefficient: meetingCoefficient || 0.7
+    };
+
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+
+    document.getElementById("setupPage").classList.add("hidden");
+    document.getElementById("appPage").classList.remove("hidden");
+
+    loadApp();
+}
+
+function loadApp() {
+    document.getElementById("dailyAvgTime").value = settings.defaultProcessTime;
+
+    document.getElementById("userInfo").innerHTML = `
+        👤 <b>${settings.name}</b><br>
+        🕒 Mesai: <b>${settings.startTime} - ${settings.endTime}</b><br>
+        🎯 Hedef: <b>%${settings.targetPercent}</b> |
+        Hedef Süre: <b>${settings.targetMinutes.toFixed(0)} dk</b>
+    `;
+}
+
+function calculateWorkMinutes(start, end) {
+    const [sh, sm] = start.split(":").map(Number);
+    const [eh, em] = end.split(":").map(Number);
+
+    const startMinutes = sh * 60 + sm;
+    const endMinutes = eh * 60 + em;
+
+    return endMinutes - startMinutes;
+}
+
+function getElapsedMinutes() {
+    const now = new Date();
+
+    const [sh, sm] = settings.startTime.split(":").map(Number);
+    const [eh, em] = settings.endTime.split(":").map(Number);
+
+    const start = new Date();
+    start.setHours(sh, sm, 0, 0);
+
+    const end = new Date();
+    end.setHours(eh, em, 0, 0);
+
+    let elapsed = Math.floor((now - start) / 60000);
+    elapsed = Math.max(1, Math.min(elapsed, settings.totalWorkMinutes));
+
+    let remaining = Math.floor((end - now) / 60000);
+    remaining = Math.max(0, remaining);
+
+    return { elapsed, remaining };
+}
+
+function toggleExtraFields() {
+    const enabled = document.getElementById("extraEnabled").value;
+
+    if (enabled === "yes") {
+        document.getElementById("extraFields").classList.remove("hidden");
+    } else {
+        document.getElementById("extraFields").classList.add("hidden");
+    }
+}
+
+function calculate() {
+    const dailyCount = Number(document.getElementById("dailyCount").value) || 0;
+    const dailyAvgTime = Number(document.getElementById("dailyAvgTime").value) || settings.defaultProcessTime;
+
+    const extraEnabled = document.getElementById("extraEnabled").value === "yes";
+    const extraCount = extraEnabled ? Number(document.getElementById("extraCount").value) || 0 : 0;
+    const extraAvgTime = extraEnabled ? Number(document.getElementById("extraAvgTime").value) || 0 : 0;
+
+    const meetingTime = Number(document.getElementById("meetingTime").value) || 0;
+    const note = document.getElementById("dailyNote").value.trim();
+
+    const normalProduction = dailyCount * (dailyAvgTime + settings.extraPerProcess);
+    const extraProduction = extraCount * extraAvgTime * settings.extraCoefficient;
+    const meetingProduction = meetingTime * settings.meetingCoefficient;
+
+    const totalProduction = normalProduction + extraProduction + meetingProduction;
+
+    const generalEfficiency = (totalProduction / settings.totalWorkMinutes) * 100;
+    const targetPerformance = (totalProduction / settings.targetMinutes) * 100;
+
+    const time = getElapsedMinutes();
+    const instantEfficiency = (totalProduction / time.elapsed) * 100;
+
+    const idleMinutes = Math.max(0, time.elapsed - totalProduction);
+    const remainingTargetMinutes = Math.max(0, settings.targetMinutes - totalProduction);
+
+    const oneProcessMinute = dailyAvgTime + settings.extraPerProcess;
+    const requiredProcessCount = Math.ceil(remainingTargetMinutes / oneProcessMinute);
+
+    let statusClass = "danger";
+    let statusText = "Hedef Altında";
+
+    if (generalEfficiency >= settings.targetPercent) {
+        statusClass = "success";
+        statusText = "Hedef Tamamlandı";
+    } else if (targetPerformance >= 80) {
+        statusClass = "warning";
+        statusText = "Hedefe Yaklaşıldı";
+    }
+
+    document.getElementById("resultArea").classList.remove("hidden");
+
+    const mainResult = document.getElementById("mainResult");
+    mainResult.className = `result ${statusClass}`;
+    mainResult.innerHTML = `%${generalEfficiency.toFixed(1)}<br>${statusText}`;
+
+    document.getElementById("productionStat").innerText =
+        `${totalProduction.toFixed(0)} dk Üretim`;
+
+    document.getElementById("idleStat").innerText =
+        `${idleMinutes.toFixed(0)} dk Boş/Mola`;
+
+    document.getElementById("targetStat").innerText =
+        `${remainingTargetMinutes.toFixed(0)} dk Kalan Hedef`;
+
+    document.getElementById("instantStat").innerText =
+        `%${instantEfficiency.toFixed(1)} Anlık`;
+
+    let message = "";
+
+    if (remainingTargetMinutes <= 0) {
+        message = "✅ Bugünkü hedef tamamlandı.";
+    } else if (time.remaining <= 0) {
+        message = "⛔ Mesai bitti, hedef tamamlanmadı.";
+    } else {
+        message = `⚠️ Hedef için yaklaşık <b>${requiredProcessCount}</b> işlem daha gerekiyor.`;
+    }
+
+    document.getElementById("analysisBox").innerHTML = `
+        • Geçen süre: <b>${time.elapsed} dk</b><br>
+        • Kalan süre: <b>${time.remaining} dk</b><br>
+        • Normal üretim: <b>${normalProduction.toFixed(0)} dk</b><br>
+        • Ek işlem üretimi: <b>${extraProduction.toFixed(0)} dk</b><br>
+        • Toplantı/eğitim katkısı: <b>${meetingProduction.toFixed(0)} dk</b><br>
+        • Hedefe göre performans: <b>%${targetPerformance.toFixed(1)}</b><br><br>
+        ${message}
+    `;
+
+    lastReport = {
+        date: new Date().toLocaleDateString("tr-TR"),
+        time: new Date().toLocaleTimeString("tr-TR"),
+        name: settings.name,
+        dailyCount,
+        dailyAvgTime,
+        extraCount,
+        extraAvgTime,
+        meetingTime,
+        normalProduction: normalProduction.toFixed(0),
+        extraProduction: extraProduction.toFixed(0),
+        meetingProduction: meetingProduction.toFixed(0),
+        totalProduction: totalProduction.toFixed(0),
+        generalEfficiency: generalEfficiency.toFixed(1),
+        instantEfficiency: instantEfficiency.toFixed(1),
+        targetPerformance: targetPerformance.toFixed(1),
+        idleMinutes: idleMinutes.toFixed(0),
+        remainingTargetMinutes: remainingTargetMinutes.toFixed(0),
+        requiredProcessCount,
+        note,
+        statusText
+    };
+}
+
+function saveDailyRecord() {
+    if (!lastReport) {
+        alert("Önce hesaplama yapmalısın.");
+        return;
+    }
+
+    const records = getRecords();
+    records.push(lastReport);
+
+    localStorage.setItem(RECORDS_KEY, JSON.stringify(records));
+
+    alert("Günlük kayıt kaydedildi.");
+}
+
+function getRecords() {
+    const data = localStorage.getItem(RECORDS_KEY);
+    return data ? JSON.parse(data) : [];
+}
+
+function showHistory() {
+    const area = document.getElementById("historyArea");
+    const list = document.getElementById("historyList");
+
+    area.classList.toggle("hidden");
+
+    const records = getRecords();
+
+    if (records.length === 0) {
+        list.innerHTML = "<p>Kayıt bulunamadı.</p>";
+        return;
+    }
+
+    list.innerHTML = "";
+
+    records.slice().reverse().forEach(record => {
+        const div = document.createElement("div");
+        div.className = "history-item";
+        div.innerHTML = `
+            <b>${record.date} - ${record.time}</b><br>
+            Personel: ${record.name}<br>
+            Verimlilik: %${record.generalEfficiency}<br>
+            Üretim: ${record.totalProduction} dk<br>
+            Durum: ${record.statusText}
+        `;
+        list.appendChild(div);
+    });
+}
+
+function downloadExcel() {
+    const records = getRecords();
+
+    if (records.length === 0) {
+        alert("Excel için önce en az bir kayıt kaydetmelisin.");
+        return;
+    }
+
+    let table = `
         <table border="1">
             <tr>
+                <th>Tarih</th>
+                <th>Saat</th>
                 <th>Personel</th>
+                <th>Dinleme Adedi</th>
+                <th>Ortalama Süre</th>
+                <th>Ek İşlem Adedi</th>
+                <th>Ek İşlem Süresi</th>
+                <th>Toplantı dk</th>
+                <th>Toplam Üretim dk</th>
                 <th>Genel Verimlilik</th>
                 <th>Anlık Verimlilik</th>
-                <th>Toplam Üretim dk</th>
+                <th>Hedef Performansı</th>
                 <th>Boş/Mola dk</th>
                 <th>Kalan Hedef dk</th>
-                <th>Gereken Adet</th>
+                <th>Gereken İşlem</th>
+                <th>Durum</th>
+                <th>Not</th>
             </tr>
-            <tr>
-                <td>${sonRapor.personel}</td>
-                <td>%${sonRapor.genelVerimlilik}</td>
-                <td>%${sonRapor.anlikVerimlilik}</td>
-                <td>${sonRapor.toplamUretim}</td>
-                <td>${sonRapor.bosMolaDk}</td>
-                <td>${sonRapor.kalanHedefDk}</td>
-                <td>${sonRapor.gerekenAdet}</td>
-            </tr>
-        </table>
     `;
+
+    records.forEach(r => {
+        table += `
+            <tr>
+                <td>${r.date}</td>
+                <td>${r.time}</td>
+                <td>${r.name}</td>
+                <td>${r.dailyCount}</td>
+                <td>${r.dailyAvgTime}</td>
+                <td>${r.extraCount}</td>
+                <td>${r.extraAvgTime}</td>
+                <td>${r.meetingTime}</td>
+                <td>${r.totalProduction}</td>
+                <td>%${r.generalEfficiency}</td>
+                <td>%${r.instantEfficiency}</td>
+                <td>%${r.targetPerformance}</td>
+                <td>${r.idleMinutes}</td>
+                <td>${r.remainingTargetMinutes}</td>
+                <td>${r.requiredProcessCount}</td>
+                <td>${r.statusText}</td>
+                <td>${r.note || ""}</td>
+            </tr>
+        `;
+    });
+
+    table += "</table>";
 
     const blob = new Blob(["\ufeff" + table], {
         type: "application/vnd.ms-excel"
@@ -367,35 +652,45 @@ function excelIndir() {
     const a = document.createElement("a");
 
     a.href = url;
-    a.download = `${sonRapor.personel}_Verimlilik_Raporu.xls`;
+    a.download = "verimlilik_raporu.xls";
     a.click();
 
     URL.revokeObjectURL(url);
 }
 
-async function paylas() {
-    if (!sonRapor) {
-        alert("Önce analiz yapmalısın.");
+async function shareReport() {
+    if (!lastReport) {
+        alert("Önce hesaplama yapmalısın.");
         return;
     }
 
-    const metin =
+    const text =
 `📊 Verimlilik Raporu
 
-Personel: ${sonRapor.personel}
-Genel Verimlilik: %${sonRapor.genelVerimlilik}
-Anlık Verimlilik: %${sonRapor.anlikVerimlilik}
-Toplam Üretim: ${sonRapor.toplamUretim} dk
-Boş/Mola: ${sonRapor.bosMolaDk} dk
-Kalan Hedef: ${sonRapor.kalanHedefDk} dk
-Gereken İşlem: ${sonRapor.gerekenAdet} adet`;
+Personel: ${lastReport.name}
+Tarih: ${lastReport.date}
+Genel Verimlilik: %${lastReport.generalEfficiency}
+Anlık Verimlilik: %${lastReport.instantEfficiency}
+Toplam Üretim: ${lastReport.totalProduction} dk
+Boş/Mola: ${lastReport.idleMinutes} dk
+Kalan Hedef: ${lastReport.remainingTargetMinutes} dk
+Durum: ${lastReport.statusText}`;
 
     if (navigator.share) {
-        await navigator.share({ text: metin });
+        await navigator.share({ text });
     } else {
-        await navigator.clipboard.writeText(metin);
+        await navigator.clipboard.writeText(text);
         alert("Rapor kopyalandı.");
     }
+}
+
+function resetSettings() {
+    const ok = confirm("Ayarları sıfırlamak istiyor musun? Kayıtlar silinmez.");
+
+    if (!ok) return;
+
+    localStorage.removeItem(SETTINGS_KEY);
+    location.reload();
 }
 </script>
 

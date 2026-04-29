@@ -17,19 +17,21 @@
     --card:#ffffff;
     --line:#e2e8f0;
     --text:#0f172a;
+    --whatsapp:#25D366;
+    --gmail:#ea4335;
 }
 
 *{box-sizing:border-box}
 
 body{
     margin:0;
-    font-family:Arial, sans-serif;
+    font-family:Arial,sans-serif;
     background:var(--bg);
     color:var(--text);
 }
 
 .app{
-    max-width:720px;
+    max-width:740px;
     margin:auto;
     padding:14px;
 }
@@ -120,8 +122,16 @@ button{
 .btn-green{background:var(--green);color:white}
 .btn-red{background:var(--red);color:white}
 .btn-light{background:#eef2f7;color:var(--navy)}
+.btn-whatsapp{background:var(--whatsapp);color:white}
+.btn-gmail{background:var(--gmail);color:white}
 
 .hidden{display:none!important}
+
+.login-icon{
+    font-size:48px;
+    text-align:center;
+    margin-bottom:8px;
+}
 
 .user-card{
     display:grid;
@@ -273,6 +283,12 @@ button{
     color:var(--gray);
     font-size:12px;
 }
+
+@media(max-width:520px){
+    .row,.user-card,.stats{
+        grid-template-columns:1fr;
+    }
+}
 </style>
 </head>
 
@@ -290,6 +306,9 @@ button{
 
         <label>Personel / Uzman Adı</label>
         <input id="setName" placeholder="Ad Soyad">
+
+        <label>Giriş PIN Kodu</label>
+        <input id="setPin" type="password" placeholder="Örn: 1234">
 
         <label>Hedef Verimlilik (%)</label>
         <input id="setTarget" type="number" value="75">
@@ -324,6 +343,17 @@ button{
         <p class="small">Ayarlar bu cihazda kayıtlı kalır.</p>
     </div>
 
+    <div id="loginPage" class="card hidden">
+        <div class="login-icon">🎧</div>
+        <h2>Giriş Yap</h2>
+        <p class="small">Kalite performans paneline erişmek için PIN kodunu gir.</p>
+
+        <label>PIN Kodu</label>
+        <input id="loginPin" type="password" placeholder="PIN">
+
+        <button class="btn-primary" onclick="login()">Giriş Yap</button>
+    </div>
+
     <div id="appPage" class="hidden">
 
         <div class="card">
@@ -334,6 +364,7 @@ button{
                 <div class="user-box">🕒 Mesai <b id="infoShift"></b></div>
                 <div class="user-box">✅ Net Çalışma <b id="infoNet"></b></div>
             </div>
+            <button class="btn-light" onclick="logout()">Çıkış Yap</button>
         </div>
 
         <div class="card">
@@ -442,8 +473,9 @@ button{
 </div>
 
 <script>
-const SETTINGS_KEY = "quality_performance_settings_v2";
-const RECORDS_KEY = "quality_performance_records_v2";
+const SETTINGS_KEY = "quality_performance_settings_final";
+const RECORDS_KEY = "quality_performance_records_final";
+const SESSION_KEY = "quality_performance_session_final";
 
 let settings = null;
 let lastReport = null;
@@ -454,22 +486,35 @@ function init(){
     settings = JSON.parse(localStorage.getItem(SETTINGS_KEY) || "null");
 
     if(!settings){
-        document.getElementById("setupPage").classList.remove("hidden");
-    }else{
-        document.getElementById("appPage").classList.remove("hidden");
-        loadApp();
+        showOnly("setupPage");
+        return;
     }
+
+    if(localStorage.getItem(SESSION_KEY) === "yes"){
+        showOnly("appPage");
+        loadApp();
+    }else{
+        showOnly("loginPage");
+    }
+}
+
+function showOnly(id){
+    ["setupPage","loginPage","appPage"].forEach(page=>{
+        document.getElementById(page).classList.add("hidden");
+    });
+    document.getElementById(id).classList.remove("hidden");
 }
 
 function saveSettings(){
     const name = val("setName").trim();
+    const pin = val("setPin").trim();
     const target = num("setTarget");
     const start = val("setStart");
     const end = val("setEnd");
     const breakMinutes = num("setBreak");
     const defaultTime = num("setDefaultTime");
 
-    if(!name || !target || !start || !end || !defaultTime){
+    if(!name || !pin || !target || !start || !end || !defaultTime){
         alert("Lütfen zorunlu alanları doldur.");
         return;
     }
@@ -489,6 +534,7 @@ function saveSettings(){
 
     settings = {
         name,
+        pin,
         target,
         start,
         end,
@@ -503,6 +549,24 @@ function saveSettings(){
     };
 
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+    localStorage.setItem(SESSION_KEY, "yes");
+    location.reload();
+}
+
+function login(){
+    const pin = val("loginPin").trim();
+
+    if(pin === settings.pin){
+        localStorage.setItem(SESSION_KEY, "yes");
+        showOnly("appPage");
+        loadApp();
+    }else{
+        alert("PIN hatalı.");
+    }
+}
+
+function logout(){
+    localStorage.removeItem(SESSION_KEY);
     location.reload();
 }
 
@@ -598,8 +662,8 @@ function calculateDaily(){
     };
 
     renderResult("dailyResult", lastReport, production, `
-        • Geçen net çalışma: <b>${time.netElapsed} dk</b><br>
-        • Kalan net çalışma: <b>${time.netRemaining} dk</b><br>
+        • Geçen net çalışma: <b>${time.netElapsed.toFixed(0)} dk</b><br>
+        • Kalan net çalışma: <b>${time.netRemaining.toFixed(0)} dk</b><br>
         • Gün sonu tahmini verim: <b>%${projectedEfficiency.toFixed(1)}</b><br>
         • Boş / kayıp süre: <b>${idle.toFixed(0)} dk</b><br><br>
         ${advice}
@@ -698,7 +762,9 @@ function renderResult(targetId, report, production, detailHtml){
         </div>
 
         <button class="btn-green" onclick="saveRecord()">Kaydet</button>
-        <button class="btn-blue" onclick="copyReport()">Raporu Kopyala / Paylaş</button>
+        <button class="btn-blue" onclick="copyReport()">📋 Raporu Kopyala</button>
+        <button class="btn-whatsapp" onclick="shareWhatsApp()">🟢 WhatsApp ile Paylaş</button>
+        <button class="btn-gmail" onclick="shareGmail()">✉️ Gmail ile Paylaş</button>
     `;
 
     document.getElementById(targetId).classList.remove("hidden");
@@ -764,16 +830,12 @@ function elapsedToday(){
     let elapsedTotal = Math.floor((now - start) / 60000);
     elapsedTotal = Math.max(1, Math.min(elapsedTotal, settings.totalMinutes));
 
-    let remainingTotal = Math.floor((end - now) / 60000);
-    remainingTotal = Math.max(0, remainingTotal);
-
     const breakRatio = settings.breakMinutes / settings.totalMinutes;
     const netElapsed = Math.max(1, elapsedTotal - (elapsedTotal * breakRatio));
     const netRemaining = Math.max(0, settings.netMinutes - netElapsed);
 
     return {
         elapsedTotal,
-        remainingTotal,
         netElapsed,
         netRemaining
     };
@@ -882,14 +944,10 @@ function downloadExcel(){
     URL.revokeObjectURL(url);
 }
 
-async function copyReport(){
-    if(!lastReport){
-        alert("Önce hesaplama yap.");
-        return;
-    }
+function reportText(){
+    if(!lastReport) return "";
 
-    const text =
-`🎧 ${lastReport.type} Kalite Performans Raporu
+    return `🎧 ${lastReport.type} Kalite Performans Raporu
 
 Uzman: ${lastReport.name}
 Tarih: ${lastReport.date}
@@ -900,13 +958,41 @@ Eksik Hedef: ${lastReport.remainingTarget} dk
 Gereken Dinleme: ${lastReport.requiredCount}
 Skor: ${lastReport.score}/100
 Durum: ${lastReport.status}`;
+}
 
-    if(navigator.share){
-        await navigator.share({text});
-    }else{
-        await navigator.clipboard.writeText(text);
-        alert("Rapor kopyalandı.");
+async function copyReport(){
+    if(!lastReport){
+        alert("Önce hesaplama yap.");
+        return;
     }
+
+    await navigator.clipboard.writeText(reportText());
+    alert("Rapor kopyalandı.");
+}
+
+function shareWhatsApp(){
+    if(!lastReport){
+        alert("Önce hesaplama yap.");
+        return;
+    }
+
+    const text = encodeURIComponent(reportText());
+    window.open(`https://wa.me/?text=${text}`, "_blank");
+}
+
+function shareGmail(){
+    if(!lastReport){
+        alert("Önce hesaplama yap.");
+        return;
+    }
+
+    const subject = encodeURIComponent("Kalite Performans Raporu");
+    const body = encodeURIComponent(reportText());
+
+    window.open(
+        `https://mail.google.com/mail/?view=cm&fs=1&su=${subject}&body=${body}`,
+        "_blank"
+    );
 }
 
 function clearRecords(){
@@ -919,6 +1005,7 @@ function clearRecords(){
 function resetSettings(){
     if(confirm("Ayarlar sıfırlansın mı? Kayıtlar silinmez.")){
         localStorage.removeItem(SETTINGS_KEY);
+        localStorage.removeItem(SESSION_KEY);
         location.reload();
     }
 }

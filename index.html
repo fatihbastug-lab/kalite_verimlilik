@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verimlilik Takibi - Kesin Hesap</title>
+
+<style>
+:root {
+    --primary: #cc0000;
+    --secondary: #2c3e50;
+    --bg: #f4f7f6;
+    --card-bg: #ffffff;
+}
+
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background: var(--bg);
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.card {
+    background: var(--card-bg);
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 5px 25px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 460px;
+}
+
+.info-header {
+    text-align: center;
+    margin-bottom: 15px;
+    font-size: 13px;
+    background: #eef2f3;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid #ddd;
+}
+
+label {
+    font-size: 11px;
+    font-weight: bold;
+    color: var(--primary);
+    display: block;
+    margin-top: 12px;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+input, select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: #fafafa;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.row {
+    display: flex;
+    gap: 8px;
+}
+
+.btn-main {
+    width: 100%;
+    padding: 14px;
+    background: var(--secondary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+.res-badge {
+    margin-top: 15px;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+    display: none;
+}
+
+.success {
+    background: #27ae60;
+    color: white;
+}
+
+.danger {
+    background: #c0392b;
+    color: white;
+}
+
+.stats-grid {
+    display: none;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.stat-item {
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+}
+
+.analysis-box {
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    background: #fffde7;
+    border-left: 5px solid #fbc02d;
+    font-size: 13px;
+    line-height: 1.5;
+    display: none;
+}
+
+.btn-group {
+    display: none;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.btn-excel {
+    background: #1f7244;
+    color: white;
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btn-share {
+    background: #3498db;
+    color: white;
+    flex: 1;
+    padding: 10px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <div class="info-header">
+        🕒 Mesai: <b>08:30 - 18:45</b> | Toplam: <b>615 dk</b><br>
+        🎯 Hedef Verimlilik: <b>%65</b> | Hedef Süre: <b>355 dk</b>
+    </div>
+
+    <label>Personel</label>
+    <select id="personelSelect"></select>
+
+    <label>Normal Dinleme / İşlem</label>
+    <div class="row">
+        <input type="number" id="adet" placeholder="Adet">
+        <input type="number" id="sure" placeholder="Ort. Süre">
+    </div>
+
+    <label>Ek İşlem / 0.5 Katsayı</label>
+    <div class="row">
+        <input type="number" id="ekAdet" placeholder="Adet">
+        <input type="number" id="ekSure" placeholder="Ort. Süre">
+    </div>
+
+    <label>Toplantı / Eğitim Dakikası</label>
+    <input type="number" id="toplanti" placeholder="Toplam dk">
+
+    <button class="btn-main" onclick="hesapla()">ANLIK DURUMU ANALİZ ET</button>
+
+    <div id="verimSonuc" class="res-badge"></div>
+
+    <div id="istatistikler" class="stats-grid">
+        <div class="stat-item" style="background:#2980b9;" id="uretimDk">0 dk Üretim</div>
+        <div class="stat-item" style="background:#e67e22;" id="molaDk">0 dk Boş/Mola</div>
+        <div class="stat-item" style="background:#8e44ad;" id="hedefDurum">0 dk Hedef</div>
+        <div class="stat-item" style="background:#16a085;" id="anlikVerim">0% Anlık</div>
+    </div>
+
+    <div id="analizDetay" class="analysis-box"></div>
+
+    <div class="btn-group" id="footerButtons">
+        <button class="btn-excel" onclick="excelIndir()">📊 EXCEL İNDİR</button>
+        <button class="btn-share" onclick="paylas()">📤 PAYLAŞ</button>
+    </div>
+
+</div>
+
+<script>
+const isimler = [
+    "DOGA SUMEYYE SAFAK",
+    "OZLEM BASCAVUSOGULLARI",
+    "FATIH KARADENIZ",
+    "HALIDE PALAVAR",
+    "FATIH BASTUG",
+    "HABIBE KARABIYIK",
+    "GOKSU DANACI",
+    "RUKIYE DEMIRKALE",
+    "YALIN BASBUG",
+    "MUNEVVER YILMAZ",
+    "BERFIN SULTAN DAGLI"
+];
+
+const sel = document.getElementById("personelSelect");
+
+isimler.forEach(isim => {
+    const opt = document.createElement("option");
+    opt.value = isim;
+    opt.textContent = isim;
+    sel.appendChild(opt);
+});
+
+let sonRapor = null;
+
+function hesapla() {
+    const simdi = new Date();
+
+    const baslangic = new Date();
+    baslangic.setHours(8, 30, 0, 0);
+
+    const bitis = new Date();
+    bitis.setHours(18, 45, 0, 0);
+
+    const toplamMesaiDk = 615;
+    const hedefVerimYuzde = 65;
+    const hedefDk = 355;
+
+    let gecenDk = Math.floor((simdi - baslangic) / 60000);
+    gecenDk = Math.max(1, Math.min(gecenDk, toplamMesaiDk));
+
+    let kalanDk = Math.floor((bitis - simdi) / 60000);
+    kalanDk = Math.max(0, kalanDk);
+
+    const normalAdet = Number(document.getElementById("adet").value) || 0;
+    const normalSure = Number(document.getElementById("sure").value) || 0;
+    const ekAdet = Number(document.getElementById("ekAdet").value) || 0;
+    const ekSure = Number(document.getElementById("ekSure").value) || 0;
+    const toplantiDk = Number(document.getElementById("toplanti").value) || 0;
+
+    const islemBasiEkSure = 2;
+    const toplantıKatsayi = 0.70;
+    const ekIslemKatsayi = 0.50;
+
+    const normalUretim = normalAdet * (normalSure + islemBasiEkSure);
+    const ekUretim = ekAdet * ekSure * ekIslemKatsayi;
+    const toplantiUretim = toplantiDk * toplantıKatsayi;
+
+    const toplamUretim = normalUretim + ekUretim + toplantiUretim;
+
+    const hedefeGorePerformans = (toplamUretim / hedefDk) * 100;
+    const genelVerimlilik = (toplamUretim / toplamMesaiDk) * 100;
+    const anlikVerimlilik = (toplamUretim / gecenDk) * 100;
+
+    const bosMolaDk = Math.max(0, gecenDk - toplamUretim);
+    const kalanHedefDk = Math.max(0, hedefDk - toplamUretim);
+
+    const ortNormalIslemDk = normalSure > 0 ? normalSure + islemBasiEkSure : 10;
+    const gerekenAdet = Math.ceil(kalanHedefDk / ortNormalIslemDk);
+
+    const vBadge = document.getElementById("verimSonuc");
+    vBadge.style.display = "block";
+
+    vBadge.innerText = `%${genelVerimlilik.toFixed(1)} GENEL VERİMLİLİK`;
+    vBadge.className = genelVerimlilik >= hedefVerimYuzde
+        ? "res-badge success"
+        : "res-badge danger";
+
+    document.getElementById("istatistikler").style.display = "grid";
+    document.getElementById("footerButtons").style.display = "flex";
+
+    document.getElementById("uretimDk").innerText =
+        `${toplamUretim.toFixed(0)} dk Üretim`;
+
+    document.getElementById("molaDk").innerText =
+        `${bosMolaDk.toFixed(0)} dk Boş/Mola`;
+
+    document.getElementById("hedefDurum").innerText =
+        `${kalanHedefDk.toFixed(0)} dk Kalan Hedef`;
+
+    document.getElementById("anlikVerim").innerText =
+        `%${anlikVerimlilik.toFixed(1)} Anlık`;
+
+    const analiz = document.getElementById("analizDetay");
+    analiz.style.display = "block";
+
+    let durumMesaji = "";
+
+    if (kalanHedefDk <= 0) {
+        durumMesaji = "✅ Hedef tamamlandı. Bugünkü minimum hedefin üstündesin.";
+    } else if (kalanDk <= 0) {
+        durumMesaji = "⛔ Mesai bitti. Hedef tamamlanmadı.";
+    } else {
+        durumMesaji = `⚠️ Hedef için yaklaşık <b>${gerekenAdet}</b> normal işlem daha gerekli.`;
+    }
+
+    analiz.innerHTML = `
+        • Mesai başlangıcından beri geçen süre: <b>${gecenDk} dk</b><br>
+        • Mesai bitimine kalan süre: <b>${kalanDk} dk</b><br>
+        • Normal üretim: <b>${normalUretim.toFixed(0)} dk</b><br>
+        • Ek işlem üretimi: <b>${ekUretim.toFixed(0)} dk</b><br>
+        • Toplantı/eğitim katkısı: <b>${toplantiUretim.toFixed(0)} dk</b><br>
+        • Hedefe göre performans: <b>%${hedefeGorePerformans.toFixed(1)}</b><br><br>
+        ${durumMesaji}
+    `;
+
+    sonRapor = {
+        personel: document.getElementById("personelSelect").value,
+        genelVerimlilik: genelVerimlilik.toFixed(1),
+        anlikVerimlilik: anlikVerimlilik.toFixed(1),
+        toplamUretim: toplamUretim.toFixed(0),
+        bosMolaDk: bosMolaDk.toFixed(0),
+        kalanHedefDk: kalanHedefDk.toFixed(0),
+        gerekenAdet: gerekenAdet,
+        kalanDk: kalanDk
+    };
+}
+
+function excelIndir() {
+    if (!sonRapor) {
+        alert("Önce analiz yapmalısın.");
+        return;
+    }
+
+    const table = `
+        <table border="1">
+            <tr>
+                <th>Personel</th>
+                <th>Genel Verimlilik</th>
+                <th>Anlık Verimlilik</th>
+                <th>Toplam Üretim dk</th>
+                <th>Boş/Mola dk</th>
+                <th>Kalan Hedef dk</th>
+                <th>Gereken Adet</th>
+            </tr>
+            <tr>
+                <td>${sonRapor.personel}</td>
+                <td>%${sonRapor.genelVerimlilik}</td>
+                <td>%${sonRapor.anlikVerimlilik}</td>
+                <td>${sonRapor.toplamUretim}</td>
+                <td>${sonRapor.bosMolaDk}</td>
+                <td>${sonRapor.kalanHedefDk}</td>
+                <td>${sonRapor.gerekenAdet}</td>
+            </tr>
+        </table>
+    `;
+
+    const blob = new Blob(["\ufeff" + table], {
+        type: "application/vnd.ms-excel"
+    });
+
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+
+    a.href = url;
+    a.download = `${sonRapor.personel}_Verimlilik_Raporu.xls`;
+    a.click();
+
+    URL.revokeObjectURL(url);
+}
+
+async function paylas() {
+    if (!sonRapor) {
+        alert("Önce analiz yapmalısın.");
+        return;
+    }
+
+    const metin =
+`📊 Verimlilik Raporu
+
+Personel: ${sonRapor.personel}
+Genel Verimlilik: %${sonRapor.genelVerimlilik}
+Anlık Verimlilik: %${sonRapor.anlikVerimlilik}
+Toplam Üretim: ${sonRapor.toplamUretim} dk
+Boş/Mola: ${sonRapor.bosMolaDk} dk
+Kalan Hedef: ${sonRapor.kalanHedefDk} dk
+Gereken İşlem: ${sonRapor.gerekenAdet} adet`;
+
+    if (navigator.share) {
+        await navigator.share({ text: metin });
+    } else {
+        await navigator.clipboard.writeText(metin);
+        alert("Rapor kopyalandı.");
+    }
+}
+</script>
+
+</body>
+</html>
